@@ -9,9 +9,13 @@ import { wechatAdapter } from '../platform/WechatAdapter';
 export class BootScene extends Phaser.Scene {
     constructor() {
         super({ key: 'BootScene' });
+        console.log('[BootScene] 构造函数执行');
     }
 
     preload(): void {
+        console.log('[BootScene] preload 开始');
+        console.log('[BootScene] 场景尺寸:', this.cameras.main.width, 'x', this.cameras.main.height);
+
         // 创建加载进度条
         const progressBar = this.add.graphics();
         const progressBox = this.add.graphics();
@@ -34,6 +38,7 @@ export class BootScene extends Phaser.Scene {
 
         // 加载进度事件
         this.load.on('progress', (value: number) => {
+            console.log('[BootScene] 加载进度:', Math.floor(value * 100) + '%');
             progressBar.clear();
             progressBar.fillStyle(0x4CAF50, 1);
             progressBar.fillRect(250, 280, 460 * value, 30);
@@ -41,6 +46,7 @@ export class BootScene extends Phaser.Scene {
         });
 
         this.load.on('complete', () => {
+            console.log('[BootScene] 资源加载完成');
             progressBar.destroy();
             progressBox.destroy();
             loadingText.destroy();
@@ -52,15 +58,18 @@ export class BootScene extends Phaser.Scene {
 
         // 添加加载错误处理
         this.load.on('loaderror', (fileObj: any) => {
-            console.warn('资源加载失败:', fileObj.key);
+            console.error('[BootScene] 资源加载失败:', fileObj.key, fileObj);
         });
     }
 
     create(): void {
+        console.log('[BootScene] create 开始');
+
         // 初始化全局数据
         this.initGlobalData();
 
         // 跳转到主菜单
+        console.log('[BootScene] 准备跳转到 MainMenuScene');
         this.scene.start('MainMenuScene');
     }
 
@@ -79,8 +88,9 @@ export class BootScene extends Phaser.Scene {
         // 按钮等
 
         // 加载关卡数据（全部20关）
+        // 微信小游戏环境使用相对路径（不以 / 开头）
         for (let i = 1; i <= 20; i++) {
-            this.load.json(`level${i}`, `/assets/data/level${i}.json`);
+            this.load.json(`level${i}`, `assets/data/level${i}.json`);
         }
     }
 

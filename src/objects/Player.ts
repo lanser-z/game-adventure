@@ -3,11 +3,16 @@
  */
 
 import Phaser from 'phaser';
+import { TouchControls } from './TouchControls';
 
 export class Player extends Phaser.GameObjects.Image {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd!: any;
     private wasPressed: { up: boolean } = { up: false };
+
+    // 触摸控制
+    private touchControls: TouchControls | null = null;
+    private useTouchControls: boolean = false;
 
     // 玩家配置
     private moveSpeed: number = 150;
@@ -99,6 +104,21 @@ export class Player extends Phaser.GameObjects.Image {
     }
 
     /**
+     * 设置触摸控制
+     */
+    public setTouchControls(controls: TouchControls): void {
+        this.touchControls = controls;
+        this.useTouchControls = true;
+    }
+
+    /**
+     * 启用/禁用触摸控制
+     */
+    public setTouchEnabled(enabled: boolean): void {
+        this.useTouchControls = enabled;
+    }
+
+    /**
      * 更新玩家
      */
     public update(): void {
@@ -115,19 +135,42 @@ export class Player extends Phaser.GameObjects.Image {
     private handleInput(): void {
         const body = this.body as Phaser.Physics.Arcade.Body;
 
-        // 水平移动
-        if (this.cursors.left.isDown || this.wasd.A.isDown) {
+        // 水平移动 - 键盘
+        let moveLeft = this.cursors.left.isDown || this.wasd.A.isDown;
+        let moveRight = this.cursors.right.isDown || this.wasd.D.isDown;
+
+        // 如果启用触摸控制，添加触摸输入
+        if (this.useTouchControls && this.touchControls) {
+            this.touchControls.update();
+            
+            if (this.touchControls.leftDown) {
+                moveLeft = true;
+            }
+            if (this.touchControls.rightDown) {
+                moveRight = true;
+            }
+        }
+
+        // 应用水平移动
+        if (moveLeft) {
             body.setVelocityX(-this.moveSpeed);
             this.facingRight = false;
-        } else if (this.cursors.right.isDown || this.wasd.D.isDown) {
+        } else if (moveRight) {
             body.setVelocityX(this.moveSpeed);
             this.facingRight = true;
         } else {
             body.setVelocityX(0);
         }
 
-        // 跳跃
-        const jumpPressed = this.cursors.up.isDown || this.wasd.W.isDown || this.wasd.SPACE.isDown;
+        // 跳跃 - 键盘
+        let jumpPressed = this.cursors.up.isDown || this.wasd.W.isDown || this.wasd.SPACE.isDown;
+
+        // 添加触摸跳跃输入
+        if (this.useTouchControls && this.touchControls) {
+            if (this.touchControls.jumpPressed) {
+                jumpPressed = true;
+            }
+        }
 
         if (jumpPressed && !this.wasPressed.up && this.jumpCount < this.maxJumps) {
             body.setVelocityY(this.jumpForce);

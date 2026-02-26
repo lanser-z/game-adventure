@@ -10,19 +10,18 @@ import { BootScene } from './scenes/BootScene';
 import { EditorScene } from './scenes/EditorScene';
 
 /**
- * 游戏配置
+ * 游戏配置（基础配置，不包含 parent）
  */
-const config: Phaser.Types.Core.GameConfig = {
+export const baseConfig: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     width: 960,
     height: 640,
-    parent: 'game-container',
     backgroundColor: '#2c3e50',
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { x: 0, y: 0 }, // 不设置全局重力
-            debug: true // 开启调试以便查看问题
+            debug: false // 生产环境关闭调试
         }
     },
     scene: [BootScene, MainMenuScene, LevelSelectScene, GameScene, EditorScene],
@@ -39,25 +38,37 @@ const config: Phaser.Types.Core.GameConfig = {
 /**
  * 游戏主类
  */
-class TeaEggGame extends Phaser.Game {
+export class TeaEggGame extends Phaser.Game {
     constructor(config: Phaser.Types.Core.GameConfig) {
         super(config);
     }
 }
 
-// 初始化游戏
-window.onload = () => {
-    const game = new TeaEggGame(config);
-    (window as any).game = game;
+// 只在 Web 环境自动初始化
+// 检测是否在小游戏环境
+const isMiniGame = typeof (window as any).wx !== 'undefined' ||
+                   typeof (window as any).my !== 'undefined' ||
+                   typeof (window as any).tt !== 'undefined';
 
-    // 隐藏加载动画
-    setTimeout(() => {
-        const loading = document.getElementById('loading');
-        if (loading) {
-            loading.style.display = 'none';
-        }
-    }, 1000);
-};
+if (!isMiniGame) {
+    // Web 环境：自动初始化
+    window.onload = () => {
+        const webConfig = {
+            ...baseConfig,
+            parent: 'game-container'
+        };
+        const game = new TeaEggGame(webConfig);
+        (window as any).game = game;
 
-// 导出游戏类型
+        // 隐藏加载动画
+        setTimeout(() => {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.style.display = 'none';
+            }
+        }, 1000);
+    };
+}
+
+// 导出默认
 export default TeaEggGame;

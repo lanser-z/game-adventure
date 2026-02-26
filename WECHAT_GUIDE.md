@@ -94,6 +94,63 @@ npm run dev
 
 ```
 dist-wechat/
+├── assets/              # 游戏资源
+│   ├── weapp-adapter.js  # 微信 DOM/BOM 适配器
+│   ├── main-*.js         # H5 入口代码
+│   ├── wechat-*.js      # 微信入口代码
+│   └── phaser-*.js      # Phaser 引擎
+├── index.wechat.html    # 微信小游戏 HTML 入口
+├── game.json            # 微信小游戏配置
+└── sitemap.json         # 搜索配置
+```
+
+## 项目架构
+
+项目采用多平台适配架构：
+
+```
+src/
+├── main.ts              # H5 入口
+├── wechat-entry.ts      # 微信小游戏入口
+├── polyfill.ts          # 自定义 polyfill
+└── platform/            # 平台适配层
+    ├── PlatformManager.ts  # 平台管理器
+    └── WechatAdapter.ts    # 微信 API 适配
+```
+
+### 适配原理
+
+1. **weapp-adapter**：官方适配器，模拟浏览器 DOM/BOM API
+2. **polyfill.ts**：自定义补充，覆盖特殊情况
+3. **PlatformManager**：运行时平台检测和功能封装
+4. **WechatAdapter**：微信特有 API 封装（分享、存储等）
+
+### H5 开发
+
+```bash
+# 开发模式
+npm run dev
+# 访问 http://localhost:3000
+
+# 构建 H5 生产版本
+npm run build
+# 输出到 dist/
+```
+
+### 微信小游戏开发
+
+```bash
+# 构建微信版本
+npm run build:wechat
+# 输出到 dist-wechat/
+
+# 用微信开发者工具打开 dist-wechat/
+```
+
+## 其他平台适配
+
+```
+dist-wechat/
 ├── assets/          # 游戏资源
 ├── index.js         # 入口文件
 ├── index.html       # HTML 文件

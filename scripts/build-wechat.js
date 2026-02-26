@@ -17,21 +17,17 @@ const wechatDir = path.join(__dirname, '../dist-wechat');
 
 console.log('[Build] 开始构建微信小游戏...');
 
-// 清空之前的构建
 if (fs.existsSync(wechatDir)) {
     fs.rmSync(wechatDir, { recursive: true, force: true });
 }
 fs.mkdirSync(wechatDir, { recursive: true });
 
-// 复制构建文件
 function copyRecursive(src, dest) {
     const stat = fs.statSync(src);
-
     if (stat.isDirectory()) {
         if (!fs.existsSync(dest)) {
             fs.mkdirSync(dest, { recursive: true });
         }
-
         const files = fs.readdirSync(src);
         files.forEach(file => {
             copyRecursive(path.join(src, file), path.join(dest, file));
@@ -41,7 +37,6 @@ function copyRecursive(src, dest) {
     }
 }
 
-// 复制 dist 到 wechat 目录
 if (fs.existsSync(sourceDir)) {
     console.log('[Build] 复制构建文件...');
     copyRecursive(sourceDir, wechatDir);
@@ -50,48 +45,63 @@ if (fs.existsSync(sourceDir)) {
     process.exit(1);
 }
 
-// 创建微信小游戏入口文件
-// 微信小游戏需要一个 JS 入口文件来启动游戏
 const mainJsPath = path.join(wechatDir, 'assets');
-const indexJsFiles = fs.readdirSync(mainJsPath).filter(f => f.startsWith('index-') && f.endsWith('.js'));
+const jsFiles = fs.readdirSync(mainJsPath).filter(f => f.startsWith('wechat-') && f.endsWith('.js'));
 
-if (indexJsFiles.length > 0) {
-    const indexJsFile = indexJsFiles[0];
-    console.log(`[Build] 找到入口文件: ${indexJsFile}`);
+if (jsFiles.length > 0) {
+    const wechatJsFile = jsFiles[0];
+    console.log(`[Build] 找到入口文件: ${wechatJsFile}`);
 
-    // 创建微信小游戏入口文件
+    // 微信小游戏 game.js 必须使用 require
+    // 正确顺序：MutationObserver.js → symbol.js → weapp-adapter.js → 游戏代码
     const wechatEntryJs = `
 // 微信小游戏入口文件
-import './assets/${indexJsFile}';
+// 1. MutationObserver polyfill
+require('./assets/MutationObserver.js');
+
+// 2. symbol.js (ES6 支持)
+require('./assets/symbol.js');
+
+// 3. weapp-adapter.js (创建 window 和 canvas)
+require('./assets/weapp-adapter.js');
+
+// 4. 加载游戏代码
+require('./assets/${wechatJsFile}');
 `;
 
     fs.writeFileSync(path.join(wechatDir, 'game.js'), wechatEntryJs);
     console.log('[Build] 创建微信小游戏入口文件: game.js');
+} else {
+    console.error('[Build] 未找到微信入口 JS 文件');
 }
 
-// 创建微信小游戏配置文件
-const gameJsonContent = fs.readFileSync(path.join(wechatDir, 'game.json'), 'utf-8');
-const gameJson = JSON.parse(gameJsonContent);
+const gameJsonPath = path.join(wechatDir, 'game.json');
+if (fs.existsSync(gameJsonPath)) {
+    const gameJsonContent = fs.readFileSync(gameJsonPath, 'utf-8');
+    const gameJson = JSON.parse(gameJsonContent);
 
-// 更新配置
-gameJson.deviceOrientation = 'portrait';
-gameJson.showStatusBar = false;
-gameJson.networkTimeout = {
-    request: 10000,
-    downloadFile: 10000
-};
+    gameJson.deviceOrientation = 'portrait';
+    gameJson.showStatusBar = false;
+    gameJson.networkTimeout = {
+        request: 10000,
+        downloadFile: 10000
+    };
+    delete gameJson.workers;
 
-fs.writeFileSync(
-    path.join(wechatDir, 'game.json'),
-    JSON.stringify(gameJson, null, 2)
-);
+    fs.writeFileSync(gameJsonPath, JSON.stringify(gameJson, null, 2));
+}
+
+// 删除微信小游戏不需要的 HTML 文件
+console.log('[Build] 清理不需要的文件...');
+const htmlFiles = ['index.html', 'index.wechat.html'];
+htmlFiles.forEach(file => {
+    const filePath = path.join(wechatDir, file);
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`[Build] 删除: ${file}`);
+    }
+});
 
 console.log('[Build] 微信小游戏构建完成！');
 console.log('[Build] 构建目录: dist-wechat/');
 console.log('[Build] 请使用微信开发者工具打开 dist-wechat/ 目录');
-console.log('');
-console.log('[Build] 发布步骤:');
-console.log('[Build] 1. 打开微信开发者工具');
-console.log('[Build] 2. 导入项目，选择 dist-wechat/ 目录');
-console.log('[Build] 3. 填写 AppID（测试模式可以不填）');
-console.log('[Build] 4. 点击预览或上传');

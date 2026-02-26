@@ -10,6 +10,7 @@ import { Door } from '../objects/Door';
 import { Button } from '../objects/Button';
 import { Enemy } from '../objects/Enemy';
 import { TriggerZone } from '../objects/TriggerZone';
+import { TouchControls } from '../objects/TouchControls';
 
 export interface LevelConfig {
     levelId: number;
@@ -72,6 +73,7 @@ export class GameScene extends Phaser.Scene {
     private levelText!: Phaser.GameObjects.Text;
     private deathText!: Phaser.GameObjects.Text;
     private timeText!: Phaser.GameObjects.Text;
+    private touchControls!: TouchControls;
 
     // 游戏状态
     private gameTime: number = 0;
@@ -208,6 +210,12 @@ export class GameScene extends Phaser.Scene {
         // 创建玩家
         const [playerX, playerY] = this.levelConfig.player.startPosition;
         this.player = new Player(this, playerX, playerY);
+        this.add.existing(this.player);
+
+        // 创建触摸控制（移动端）
+        this.touchControls = new TouchControls(this);
+        this.player.setTouchControls(this.touchControls);
+        this.player.setTouchEnabled(true);
         this.add.existing(this.player);
 
         // 创建平台
