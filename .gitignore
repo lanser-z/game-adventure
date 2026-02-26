@@ -29,3 +29,7 @@ Thumbs.db
 # 临时文件
 *.tmp
 *.temp
+
+# 临时缓存目录
+.vite/
+refs/
