@@ -1,0 +1,22 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 茶叶蛋主体 - 稍微拉长的跳跃姿态 -->
+  <ellipse cx="32" cy="28" rx="22" ry="26" fill="#F5E6D3" stroke="#333333" stroke-width="2"/>
+  <!-- 裂纹效果 -->
+  <path d="M 20 12 Q 25 22, 20 32" stroke="#8B7355" stroke-width="1.5" fill="none"/>
+  <path d="M 30 10 Q 35 20, 30 28" stroke="#8B7355" stroke-width="1.5" fill="none"/>
+  <path d="M 40 15 Q 38 25, 42 35" stroke="#8B7355" stroke-width="1.5" fill="none"/>
+  <!-- 眼睛 - 惊讶表情 -->
+  <circle cx="24" cy="26" r="4" fill="#333333"/>
+  <circle cx="40" cy="26" r="4" fill="#333333"/>
+  <circle cx="25" cy="25" r="1.5" fill="#FFFFFF"/>
+  <circle cx="41" cy="25" r="1.5" fill="#FFFFFF"/>
+  <!-- 嘴巴 - 张开的O型 -->
+  <circle cx="32" cy="36" r="4" fill="#333333"/>
+  <circle cx="32" cy="35" r="2" fill="#FF6B6B"/>
+  <!-- 手臂 - 向上伸展 -->
+  <ellipse cx="14" cy="20" rx="4" ry="8" fill="#F5E6D3" stroke="#333333" stroke-width="1.5"/>
+  <ellipse cx="50" cy="20" rx="4" ry="8" fill="#F5E6D3" stroke="#333333" stroke-width="1.5"/>
+  <!-- 腿 - 向下伸展 -->
+  <ellipse cx="26" cy="54" rx="3" ry="6" fill="#F5E6D3" stroke="#333333" stroke-width="1.5"/>
+  <ellipse cx="38" cy="54" rx="3" ry="6" fill="#F5E6D3" stroke="#333333" stroke-width="1.5"/>
+</svg>

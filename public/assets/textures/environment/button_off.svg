@@ -1,0 +1,10 @@
+<svg width="50" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- 按钮底座 -->
+  <rect x="0" y="5" width="50" height="15" fill="#666666" stroke="#333333" stroke-width="2"/>
+  <!-- 按钮表面 - 未激活状态，凸起 -->
+  <rect x="10" y="2" width="30" height="10" fill="#FF6666" stroke="#333333" stroke-width="2"/>
+  <!-- 凸起高光 -->
+  <rect x="12" y="3" width="26" height="4" fill="#FF9999" opacity="0.5"/>
+  <!-- 侧面阴影 -->
+  <rect x="10" y="10" width="30" height="3" fill="#CC4444"/>
+</svg>

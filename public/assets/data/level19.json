@@ -1,0 +1,32 @@
+{
+  "levelId": 19,
+  "name": "综合考验",
+  "gravity": 980,
+  "player": {
+    "startPosition": [100, 200],
+    "jumpForce": -450,
+    "moveSpeed": 175,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [50, 350], "size": [150, 40] },
+    { "type": "moving", "position": [240, 400, 50], "size": [80, 25], "path": [[240, 400], [340, 400]], "speed": 80 },
+    { "type": "static", "position": [420, 400], "size": [100, 30] },
+    { "type": "static", "position": [570, 350], "size": [120, 30] },
+    { "type": "static", "position": [740, 350], "size": [120, 30] },
+    { "type": "static", "position": [900, 280], "size": [120, 30] }
+  ],
+  "blocks": [
+    { "type": "pushable", "position": [140, 300], "size": [50, 50] }
+  ],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [
+    { "type": "pressure", "position": [800, 320], "target": "btn1", "requiredWeight": 1 }
+  ],
+  "door": { "position": [950, 220], "requires": ["btn1"] },
+  "enemies": [
+    { "type": "patrol", "position": [620, 320], "range": [580, 800], "speed": 50 }
+  ]
+}

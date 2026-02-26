@@ -1,0 +1,15 @@
+<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+  <!-- 箱子主体 -->
+  <rect x="2" y="2" width="46" height="46" fill="#DEB887" stroke="#333333" stroke-width="2"/>
+  <!-- 木箱纹理 -->
+  <line x1="2" y1="15" x2="48" y2="15" stroke="#8B7355" stroke-width="1.5"/>
+  <line x1="2" y1="35" x2="48" y2="35" stroke="#8B7355" stroke-width="1.5"/>
+  <line x1="15" y1="2" x2="15" y2="48" stroke="#8B7355" stroke-width="1.5"/>
+  <line x1="35" y1="2" x2="35" y2="48" stroke="#8B7355" stroke-width="1.5"/>
+  <!-- 交叉线 -->
+  <line x1="2" y1="2" x2="48" y2="48" stroke="#8B7355" stroke-width="1"/>
+  <line x1="48" y1="2" x2="2" y2="48" stroke="#8B7355" stroke-width="1"/>
+  <!-- 推动指示箭头 -->
+  <path d="M 20 20 L 30 25 L 20 30 Z" fill="#333333" opacity="0.3"/>
+  <path d="M 30 20 L 20 25 L 30 30 Z" fill="#333333" opacity="0.3"/>
+</svg>

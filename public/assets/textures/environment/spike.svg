@@ -1,0 +1,14 @@
+<svg width="50" height="30" xmlns="http://www.w3.org/2000/svg">
+  <!-- 底座 -->
+  <rect x="0" y="25" width="50" height="5" fill="#555555" stroke="#333333" stroke-width="1"/>
+  <!-- 尖刺 -->
+  <polygon points="5,25 10,5 15,25" fill="#333333" stroke="#222222" stroke-width="1"/>
+  <polygon points="15,25 20,8 25,25" fill="#333333" stroke="#222222" stroke-width="1"/>
+  <polygon points="25,25 30,5 35,25" fill="#333333" stroke="#222222" stroke-width="1"/>
+  <polygon points="35,25 40,8 45,25" fill="#333333" stroke="#222222" stroke-width="1"/>
+  <!-- 尖刺高光 -->
+  <polygon points="7,20 10,5 13,20" fill="#555555" opacity="0.5"/>
+  <polygon points="17,22 20,8 23,22" fill="#555555" opacity="0.5"/>
+  <polygon points="27,20 30,5 33,20" fill="#555555" opacity="0.5"/>
+  <polygon points="37,22 40,8 43,22" fill="#555555" opacity="0.5"/>
+</svg>

@@ -1,0 +1,14 @@
+{
+  "description": "茶叶蛋大冒险 - 微信小游戏版本",
+  "packOptions": {
+    "ignore": [],
+    "output": "miniprogram"
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "tea-egg-adventure",
+  "version": "1.0.0",
+  "description": "茶叶蛋大冒险 - Phaser 3 益智解谜游戏",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:wechat": "tsc && vite build && node scripts/build-wechat.js",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx"
+  },
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0",
+    "vite-plugin-static-copy": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

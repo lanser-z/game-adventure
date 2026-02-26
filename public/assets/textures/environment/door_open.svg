@@ -1,0 +1,16 @@
+<svg width="40" height="60" xmlns="http://www.w3.org/2000/svg">
+  <!-- 门框 -->
+  <rect x="0" y="0" width="40" height="60" fill="none" stroke="#333333" stroke-width="2"/>
+  <!-- 门主体 - 打开状态，透视效果 -->
+  <polygon points="3,3 37,3 30,57 3,57" fill="#8B4513" stroke="#333333" stroke-width="1.5" opacity="0.8"/>
+  <!-- 门内部阴影 -->
+  <polygon points="37,3 37,57 30,57" fill="#654321" opacity="0.5"/>
+  <!-- 门纹理 -->
+  <line x1="3" y1="18" x2="32" y2="18" stroke="#654321" stroke-width="1"/>
+  <line x1="3" y1="36" x2="29" y2="36" stroke="#654321" stroke-width="1"/>
+  <line x1="15" y1="3" x2="10" y2="57" stroke="#654321" stroke-width="1"/>
+  <!-- 光芒效果 -->
+  <line x1="30" y1="20" x2="50" y2="10" stroke="#FFD700" stroke-width="2" opacity="0.6"/>
+  <line x1="30" y1="30" x2="55" y2="30" stroke="#FFD700" stroke-width="2" opacity="0.6"/>
+  <line x1="30" y1="40" x2="50" y2="50" stroke="#FFD700" stroke-width="2" opacity="0.6"/>
+</svg>

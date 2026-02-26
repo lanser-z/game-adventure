@@ -1,0 +1,8 @@
+<svg width="120" height="40" xmlns="http://www.w3.org/2000/svg">
+  <!-- 按钮背景 - 圆角矩形 -->
+  <rect x="2" y="2" width="116" height="36" rx="8" ry="8" fill="#FFFFFF" stroke="#333333" stroke-width="2"/>
+  <!-- 高光效果 -->
+  <rect x="4" y="4" width="112" height="16" rx="6" ry="6" fill="#F0F0F0" opacity="0.5"/>
+  <!-- 文字区域 -->
+  <text x="60" y="26" font-family="Arial, sans-serif" font-size="16" fill="#333333" text-anchor="middle">按钮</text>
+</svg>
