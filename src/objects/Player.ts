@@ -25,42 +25,76 @@ export class Player extends Phaser.GameObjects.Image {
     private isDead: boolean = false;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        // 创建纹理
+        // 创建纹理 - 使用 Canvas API 以兼容微信小游戏
         const textureKey = 'player-texture';
         const size = 40;
+        const width = size;
+        const height = size * 1.25;
 
         if (!scene.textures.exists(textureKey)) {
-            const graphics = scene.make.graphics();
+            // 使用 Canvas 创建纹理
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
 
-            // 绘制茶叶蛋
-            graphics.fillStyle(0xF5E6D3, 1);
-            graphics.fillEllipse(size/2, size/2, size, size * 1.25);
+            // 绘制茶叶蛋主体
+            ctx.fillStyle = '#F5E6D3';
+            ctx.beginPath();
+            ctx.ellipse(width/2, height/2, size/2, size * 1.25/2, 0, 0, Math.PI * 2);
+            ctx.fill();
 
             // 裂纹
-            graphics.lineStyle(1.5, 0x8B7355, 1);
-            graphics.lineBetween(size/2 - 8, size/2 - 12, size/2 - 6, size/2 - 2);
-            graphics.lineBetween(size/2 - 6, size/2 - 2, size/2 - 8, size/2 + 8);
-            graphics.lineBetween(size/2, size/2 - 14, size/2 + 2, size/2 - 4);
-            graphics.lineBetween(size/2 + 2, size/2 - 4, size/2, size/2 + 6);
-            graphics.lineBetween(size/2 + 8, size/2 - 10, size/2 + 6, size/2);
-            graphics.lineBetween(size/2 + 6, size/2, size/2 + 8, size/2 + 10);
+            ctx.strokeStyle = '#8B7355';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(size/2 - 8, size/2 - 12);
+            ctx.lineTo(size/2 - 6, size/2 - 2);
+            ctx.lineTo(size/2 - 8, size/2 + 8);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(size/2, size/2 - 14);
+            ctx.lineTo(size/2 + 2, size/2 - 4);
+            ctx.lineTo(size/2, size/2 + 6);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(size/2 + 8, size/2 - 10);
+            ctx.lineTo(size/2 + 6, size/2);
+            ctx.lineTo(size/2 + 8, size/2 + 10);
+            ctx.stroke();
 
             // 眼睛
-            graphics.fillStyle(0x333333, 1);
-            graphics.fillCircle(size/2 - 7, size/2 - 2, 3);
-            graphics.fillCircle(size/2 + 7, size/2 - 2, 3);
+            ctx.fillStyle = '#333333';
+            ctx.beginPath();
+            ctx.arc(size/2 - 7, size/2 - 2, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size/2 + 7, size/2 - 2, 3, 0, Math.PI * 2);
+            ctx.fill();
 
             // 眼神高光
-            graphics.fillStyle(0xFFFFFF, 1);
-            graphics.fillCircle(size/2 - 6, size/2 - 3, 1);
-            graphics.fillCircle(size/2 + 8, size/2 - 3, 1);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(size/2 - 6, size/2 - 3, 1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size/2 + 8, size/2 - 3, 1, 0, Math.PI * 2);
+            ctx.fill();
 
             // 嘴巴
-            graphics.lineStyle(2, 0x333333, 1);
-            graphics.lineBetween(size/2 - 5, size/2 + 8, size/2, size/2 + 11);
-            graphics.lineBetween(size/2, size/2 + 11, size/2 + 5, size/2 + 8);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(size/2 - 5, size/2 + 8);
+            ctx.lineTo(size/2, size/2 + 11);
+            ctx.lineTo(size/2 + 5, size/2 + 8);
+            ctx.stroke();
 
-            graphics.generateTexture(textureKey, size, size * 1.25);
+            // 将 Canvas 添加到 Phaser 纹理管理器
+            scene.textures.addCanvas(textureKey, canvas);
+            console.log('[Player] 使用 Canvas 创建纹理:', textureKey);
         }
 
         // 使用 Image 创建玩家

@@ -1,0 +1,118 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 14,
+  "name": "双箱配合",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      100,
+      200
+    ],
+    "jumpForce": -440,
+    "moveSpeed": 170,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        350
+      ],
+      "size": [
+        180,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        280,
+        420
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        450,
+        420
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        650,
+        350
+      ],
+      "size": [
+        180,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        880,
+        280
+      ],
+      "size": [
+        120,
+        30
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        150,
+        300
+      ],
+      "size": [
+        50,
+        50
+      ]
+    },
+    {
+      "type": "pushable",
+      "position": [
+        200,
+        300
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      930,
+      220
+    ],
+    "requires": []
+  },
+  "enemies": []
+};

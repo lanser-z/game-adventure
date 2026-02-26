@@ -14,37 +14,36 @@ import { platformManager } from './platform/PlatformManager';
 import Phaser from 'phaser';
 import { TeaEggGame, baseConfig } from './main';
 
-// 初始化游戏
-window.onload = () => {
-    console.log('[Wechat-INIT] 游戏开始初始化...');
+// 微信小游戏：直接执行初始化（不使用 window.onload）
+console.log('[Wechat-INIT] 游戏开始初始化...');
 
-    // 初始化平台
-    platformManager.init();
-    console.log('[Wechat-INIT] 平台初始化完成');
+// 初始化平台
+platformManager.init();
+console.log('[Wechat-INIT] 平台初始化完成');
 
-    // 获取 Canvas - 微信环境使用全局 canvas
-    let canvas: HTMLCanvasElement | undefined = (window as any).canvas;
-    console.log('[Wechat-INIT] 全局 canvas:', canvas ? '存在' : '不存在');
-    
-    // 如果没有全局 canvas，从 document 获取
-    if (!canvas) {
-        console.log('[Wechat-INIT] 尝试从 document 获取 canvas');
-        canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
-        console.log('[Wechat-INIT] document canvas:', canvas ? '存在' : '不存在');
-    }
+// 获取 Canvas - 微信环境使用全局 canvas
+let canvas: HTMLCanvasElement | undefined = (window as any).canvas;
+console.log('[Wechat-INIT] 全局 canvas:', canvas ? '存在' : '不存在');
 
-    // 如果还没有，创建一个
-    if (!canvas) {
-        console.log('[Wechat-INIT] 创建新 canvas');
-        canvas = document.createElement('canvas');
-        canvas.id = 'game-canvas';
-        canvas.width = 960;
-        canvas.height = 640;
-        console.log('[Wechat-INIT] 新 canvas 尺寸:', canvas.width, 'x', canvas.height);
-    }
+// 如果没有全局 canvas，从 document 获取
+if (!canvas) {
+    console.log('[Wechat-INIT] 尝试从 document 获取 canvas');
+    canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
+    console.log('[Wechat-INIT] document canvas:', canvas ? '存在' : '不存在');
+}
 
-    // 基于基础配置创建微信环境配置
-    console.log('[Wechat-INIT] 创建游戏配置...');
+// 如果还没有，创建一个
+if (!canvas) {
+    console.log('[Wechat-INIT] 创建新 canvas');
+    canvas = document.createElement('canvas');
+    canvas.id = 'game-canvas';
+    canvas.width = 960;
+    canvas.height = 640;
+    console.log('[Wechat-INIT] 新 canvas 尺寸:', canvas.width, 'x', canvas.height);
+}
+
+// 基于基础配置创建微信环境配置
+console.log('[Wechat-INIT] 创建游戏配置...');
 
     // 微信环境：明确告诉 Phaser 不使用 DOM parent
     const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -99,6 +98,12 @@ window.onload = () => {
     (window as any).game = game;
     console.log('[Wechat-INIT] 游戏实例已创建:', game);
 
+    // 启用多指触摸支持（-1 表示支持无限多点触控）
+    // 这样可以同时按住方向键和跳跃键进行斜向跳跃
+    // @ts-ignore - Phaser 3 运行时支持此属性
+    game.input.maxPointers = -1;
+    console.log('[Wechat-INIT] 多指触摸已启用，maxPointers =', (game.input as any).maxPointers);
+
     // 监听游戏就绪事件
     game.events.once('ready', () => {
         console.log('[Wechat-GAME] 游戏已就绪 (ready 事件)');
@@ -118,6 +123,5 @@ window.onload = () => {
     }, 500);
 
     console.log('[Wechat-INIT] 游戏初始化完成，等待场景加载...');
-};
 
 export {};

@@ -22,24 +22,29 @@ export class Button extends Phaser.GameObjects.Image {
     private wasOnTop: boolean = false; // 上一帧是否有人在上面
 
     constructor(scene: Phaser.Scene, x: number, y: number, data: ButtonData) {
-        // 创建纹理
+        // 创建纹理 - 使用 Canvas API 以兼容微信小游戏
         const textureKey = 'button-texture';
         if (!scene.textures.exists(textureKey)) {
-            const graphics = scene.make.graphics();
+            const canvas = document.createElement('canvas');
+            canvas.width = 50;
+            canvas.height = 25;
+            const ctx = canvas.getContext('2d')!;
 
             // 底座
-            graphics.fillStyle(0x666666, 1);
-            graphics.fillRect(0, 0, 50, 25);
-            graphics.lineStyle(2, 0x333333, 1);
-            graphics.strokeRect(0, 0, 50, 25);
+            ctx.fillStyle = '#666666';
+            ctx.fillRect(0, 0, 50, 25);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 50, 25);
 
             // 按钮表面（红色）
-            graphics.fillStyle(0xFF6666, 1);
-            graphics.fillRect(10, 2, 30, 12);
-            graphics.lineStyle(2, 0x333333, 1);
-            graphics.strokeRect(10, 2, 30, 12);
+            ctx.fillStyle = '#FF6666';
+            ctx.fillRect(10, 2, 30, 12);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(10, 2, 30, 12);
 
-            graphics.generateTexture(textureKey, 50, 25);
+            scene.textures.addCanvas(textureKey, canvas);
         }
 
         // 计算中心点
@@ -133,25 +138,36 @@ export class Button extends Phaser.GameObjects.Image {
      * 更新按钮纹理
      */
     private updateTexture(isPressed: boolean): void {
-        const textureKey = 'button-texture';
-        const graphics = this.scene.make.graphics();
+        const textureKey = isPressed ? 'button-texture-pressed' : 'button-texture';
+        const width = 50;
+        const height = 25;
 
-        // 底座
-        graphics.fillStyle(0x666666, 1);
-        graphics.fillRect(0, 0, 50, 25);
-        graphics.lineStyle(2, 0x333333, 1);
-        graphics.strokeRect(0, 0, 50, 25);
+        if (!this.scene.textures.exists(textureKey)) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
 
-        // 按钮表面（按下时绿色，未按下时红色）
-        graphics.fillStyle(isPressed ? 0x66FF66 : 0xFF6666, 1);
-        const buttonY = isPressed ? 5 : 2; // 按下时位置下移
-        graphics.fillRect(10, buttonY, 30, 12);
-        graphics.lineStyle(2, 0x333333, 1);
-        graphics.strokeRect(10, buttonY, 30, 12);
+            // 底座
+            ctx.fillStyle = '#666666';
+            ctx.fillRect(0, 0, width, height);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, width, height);
 
-        graphics.generateTexture(textureKey, 50, 25);
+            // 按钮表面（按下时绿色，未按下时红色）
+            ctx.fillStyle = isPressed ? '#66FF66' : '#FF6666';
+            const buttonY = isPressed ? 5 : 2; // 按下时位置下移
+            ctx.fillRect(10, buttonY, 30, 12);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(10, buttonY, 30, 12);
+
+            this.scene.textures.addCanvas(textureKey, canvas);
+        }
+
         this.setTexture(textureKey);
-        this.setDisplaySize(50, 25);
+        this.setDisplaySize(width, height);
     }
 
     /**

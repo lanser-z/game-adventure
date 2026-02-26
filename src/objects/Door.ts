@@ -12,35 +12,42 @@ export class Door extends Phaser.GameObjects.Image {
     private metConditions: Set<string> = new Set();
 
     constructor(scene: Phaser.Scene, x: number, y: number, requires: string[] = []) {
-        // 创建纹理
+        // 创建纹理 - 使用 Canvas API 以兼容微信小游戏
         const textureKey = 'door-texture';
         const width = 40;
         const height = 60;
 
         if (!scene.textures.exists(textureKey)) {
-            const graphics = scene.make.graphics();
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
 
             // 门框
-            graphics.fillStyle(0x333333, 1);
-            graphics.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#333333';
+            ctx.fillRect(0, 0, width, height);
 
             // 门主体
-            graphics.fillStyle(0x8B4513, 1);
-            graphics.fillRect(3, 3, width - 6, height - 6);
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(3, 3, width - 6, height - 6);
 
             // 门把手
-            graphics.fillStyle(0xFFD700, 1);
-            graphics.fillCircle(30, height / 2, 3);
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(30, height / 2, 3, 0, Math.PI * 2);
+            ctx.fill();
 
             // 锁（如果需要条件）
             if (requires.length > 0) {
-                graphics.fillStyle(0xFF0000, 1);
-                graphics.fillRect(width/2 - 8, height/2 - 8, 16, 14);
-                graphics.fillStyle(0xFFD700, 1);
-                graphics.fillCircle(width/2, height/2 - 10, 4);
+                ctx.fillStyle = '#FF0000';
+                ctx.fillRect(width/2 - 8, height/2 - 8, 16, 14);
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(width/2, height/2 - 10, 4, 0, Math.PI * 2);
+                ctx.fill();
             }
 
-            graphics.generateTexture(textureKey, width, height);
+            scene.textures.addCanvas(textureKey, canvas);
         }
 
         const centerX = x + width / 2;
@@ -147,33 +154,43 @@ export class Door extends Phaser.GameObjects.Image {
      */
     private updateColor(isOpen: boolean): void {
         // 重新生成纹理
-        const textureKey = 'door-texture';
+        const textureKey = isOpen ? 'door-texture-open' : 'door-texture-closed';
         const width = 40;
         const height = 60;
 
-        const graphics = this.scene.make.graphics();
+        if (!this.scene.textures.exists(textureKey)) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
 
-        // 门框
-        graphics.fillStyle(isOpen ? 0x4CAF50 : 0x333333, 1);
-        graphics.fillRect(0, 0, width, height);
+            // 门框
+            ctx.fillStyle = isOpen ? '#4CAF50' : '#333333';
+            ctx.fillRect(0, 0, width, height);
 
-        // 门主体
-        graphics.fillStyle(0x8B4513, 1);
-        graphics.fillRect(3, 3, width - 6, height - 6);
+            // 门主体
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(3, 3, width - 6, height - 6);
 
-        // 门把手
-        graphics.fillStyle(0xFFD700, 1);
-        graphics.fillCircle(30, height / 2, 3);
+            // 门把手
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(30, height / 2, 3, 0, Math.PI * 2);
+            ctx.fill();
 
-        // 如果有条件要求且未满足，画锁
-        if (this.requiredConditions.length > 0 && !isOpen) {
-            graphics.fillStyle(0xFF0000, 1);
-            graphics.fillRect(width/2 - 8, height/2 - 8, 16, 14);
-            graphics.fillStyle(0xFFD700, 1);
-            graphics.fillCircle(width/2, height/2 - 10, 4);
+            // 如果有条件要求且未满足，画锁
+            if (this.requiredConditions.length > 0 && !isOpen) {
+                ctx.fillStyle = '#FF0000';
+                ctx.fillRect(width/2 - 8, height/2 - 8, 16, 14);
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(width/2, height/2 - 10, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            this.scene.textures.addCanvas(textureKey, canvas);
         }
 
-        graphics.generateTexture(textureKey, width, height);
         this.setTexture(textureKey);
         this.setDisplaySize(width, height);
     }

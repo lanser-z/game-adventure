@@ -1,0 +1,107 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 13,
+  "name": "箱子过河",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      100,
+      200
+    ],
+    "jumpForce": -430,
+    "moveSpeed": 165,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        350
+      ],
+      "size": [
+        150,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        350,
+        400
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        500,
+        400
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        700,
+        350
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        900,
+        280
+      ],
+      "size": [
+        120,
+        30
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        150,
+        300
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      950,
+      220
+    ],
+    "requires": []
+  },
+  "enemies": []
+};

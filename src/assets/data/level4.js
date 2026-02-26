@@ -1,0 +1,117 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 4,
+  "name": "空中漫步",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      100,
+      200
+    ],
+    "jumpForce": -420,
+    "moveSpeed": 160,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        300
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        220,
+        360
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        350,
+        300
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        480,
+        360
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        610,
+        300
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        740,
+        240
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        880,
+        180
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      920,
+      120
+    ],
+    "requires": []
+  },
+  "enemies": []
+};

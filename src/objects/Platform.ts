@@ -26,15 +26,25 @@ export class Platform extends Phaser.GameObjects.Image {
         type: string = 'static',
         data?: PlatformData
     ) {
-        // 创建纹理 - 为每个尺寸创建唯一纹理
+        // 创建纹理 - 使用 Canvas API 以兼容微信小游戏
         const textureKey = `platform-${width}x${height}`;
         if (!scene.textures.exists(textureKey)) {
-            const graphics = scene.make.graphics();
-            graphics.fillStyle(0xCCCCCC, 1);
-            graphics.fillRect(0, 0, width, height);
-            graphics.lineStyle(3, 0x333333, 1);
-            graphics.strokeRect(0, 0, width, height);
-            graphics.generateTexture(textureKey, width, height);
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
+
+            // 填充背景
+            ctx.fillStyle = '#CCCCCC';
+            ctx.fillRect(0, 0, width, height);
+
+            // 绘制边框
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(0, 0, width, height);
+
+            // 将 Canvas 添加到 Phaser 纹理管理器
+            scene.textures.addCanvas(textureKey, canvas);
         }
 
         // 计算中心点位置
