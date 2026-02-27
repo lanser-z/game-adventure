@@ -24,7 +24,7 @@ export default defineConfig({
     wechatAdapterInject(),
     viteStaticCopy({
       targets: [
-        { src: 'public/assets/*', dest: 'assets' },
+        { src: 'public/assets/**/*', dest: 'assets' },
         { src: 'sitemap.json', dest: '.' },
         { src: 'project.wechat.json', dest: '.', rename: 'game.json' },
         { src: 'src/platforms/adapter/weapp-adapter.js', dest: 'assets', rename: 'weapp-adapter.js' },

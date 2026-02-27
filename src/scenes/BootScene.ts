@@ -66,19 +66,9 @@ export class BootScene extends Phaser.Scene {
         console.log('[BootScene] preload 开始');
         console.log('[BootScene] 场景尺寸:', this.cameras.main.width, 'x', this.cameras.main.height);
 
-        // 加载玩家精灵图片
-        const playerImages = [
-            'idle_1', 'idle_2',
-            'walk_left_1', 'walk_left_2',
-            'walk_right_1', 'walk_right_2',
-            'jump', 'fall'
-        ];
-
-        playerImages.forEach(name => {
-            this.load.image(`player_${name}`, `assets/player/${name}.png`);
-        });
-
-        console.log('[BootScene] 开始加载玩家图片...');
+        // 微信小游戏不能直接通过 load.image 加载本地文件
+        // 需要在 create 中手动处理
+        console.log('[BootScene] 跳过 preload 中的图片加载，将在 create 中处理');
 
         // 创建加载进度条
         const progressBar = this.add.graphics();
@@ -120,6 +110,55 @@ export class BootScene extends Phaser.Scene {
     create(): void {
         console.log('[BootScene] create 开始');
 
+        // 加载玩家图片（微信小游戏特殊处理）
+        this.loadPlayerImages().then(() => {
+            console.log('[BootScene] 玩家图片加载完成');
+            this.continueCreate();
+        });
+    }
+
+    /**
+     * 加载玩家图片（微信小游戏特殊处理）
+     */
+    private async loadPlayerImages(): Promise<void> {
+        const playerImages = [
+            'idle_1', 'idle_2',
+            'walk_left_1', 'walk_left_2',
+            'walk_right_1', 'walk_right_2',
+            'jump', 'fall'
+        ];
+
+        const promises = playerImages.map(name => {
+            return new Promise<void>((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    // 创建 Canvas 纹理
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d')!;
+                    ctx.drawImage(img, 0, 0);
+
+                    // 添加到 Phaser 纹理管理器
+                    this.textures.addCanvas(`player_${name}`, canvas);
+                    console.log(`[BootScene] 加载玩家图片: ${name}`);
+                    resolve();
+                };
+                img.onerror = () => {
+                    console.error(`[BootScene] 加载玩家图片失败: ${name}`);
+                    reject(new Error(`Failed to load ${name}`));
+                };
+                img.src = `assets/player/${name}.png`;
+            });
+        });
+
+        await Promise.all(promises);
+    }
+
+    /**
+     * 继续创建（在图片加载完成后）
+     */
+    private continueCreate(): void {
         // 将关卡数据存入缓存，供 GameScene 使用
         console.log('[BootScene] 将关卡数据存入缓存...');
         for (let i = 1; i <= 20; i++) {

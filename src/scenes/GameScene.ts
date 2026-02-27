@@ -130,6 +130,13 @@ export class GameScene extends Phaser.Scene {
             return;
         }
 
+        // 检测玩家是否掉出场景边界（死亡）
+        if (this.player && this.player.y > 700) {
+            if (!this.player.isDead) {
+                this.player.die();
+            }
+        }
+
         // 更新UI
         this.updateUI();
     }
@@ -390,7 +397,9 @@ export class GameScene extends Phaser.Scene {
         _player: Player,
         door: Door
     ): void {
-        if (door.isOpenCheck()) {
+        const isOpen = door.isOpenCheck();
+        console.log('[GameScene] 玩家接触门，门状态:', isOpen ? '开启' : '关闭');
+        if (isOpen) {
             this.levelComplete();
         }
     }
@@ -505,8 +514,10 @@ export class GameScene extends Phaser.Scene {
      * 玩家死亡
      */
     public playerDied(): void {
+        console.log('[GameScene] 玩家死亡，死亡次数:', this.deathCount);
         this.deathCount++;
         this.time.delayedCall(1000, () => {
+            console.log('[GameScene] 1秒后重新开始关卡');
             this.restartLevel();
         });
     }
@@ -515,6 +526,7 @@ export class GameScene extends Phaser.Scene {
      * 关卡完成
      */
     private levelComplete(): void {
+        console.log('[GameScene] 关卡完成！');
         this.isGameOver = true;
 
         const { width } = this.cameras.main;
@@ -533,13 +545,16 @@ export class GameScene extends Phaser.Scene {
         const maxUnlocked = this.registry.get('maxUnlockedLevel') || 1;
         if (typeof this.levelId === 'number' && this.levelId >= maxUnlocked && this.levelId < 20) {
             this.registry.set('maxUnlockedLevel', this.levelId + 1);
+            console.log('[GameScene] 解锁下一关:', this.levelId + 1);
         }
 
         // 3秒后返回或进入下一关
         this.time.delayedCall(3000, () => {
             if (typeof this.levelId === 'number' && this.levelId < 20) {
+                console.log('[GameScene] 进入下一关:', this.levelId + 1);
                 this.scene.start('GameScene', { levelId: this.levelId + 1 });
             } else {
+                console.log('[GameScene] 返回主菜单');
                 this.scene.start('MainMenuScene');
             }
         });

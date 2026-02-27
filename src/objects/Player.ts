@@ -26,7 +26,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     // 状态
     private facingRight: boolean = true;
-    private isDead: boolean = false;
+    public isDead: boolean = false;
     private isGrounded: boolean = false;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -240,22 +240,26 @@ export class Player extends Phaser.GameObjects.Sprite {
         const velocityX = body.velocity.x;
         const velocityY = body.velocity.y;
 
-        // 设置朝向和缩放
-        this.setScale(this.facingRight ? 1 : -1, 1);
-
         // 确定应该播放的动画
         let animKey = 'idle';
 
         if (!this.isGrounded) {
-            // 空中状态
+            // 空中状态（idle、jump、fall 是对称动画，需要根据朝向翻转）
             if (velocityY < 0) {
                 animKey = 'jump';   // 上升
             } else {
                 animKey = 'fall';   // 下落
             }
+            // 对称动画：根据朝向设置翻转
+            this.setScale(this.facingRight ? 1 : -1, 1);
         } else if (Math.abs(velocityX) > 10) {
-            // 移动中
+            // 移动中（walk_left 和 walk_right 是独立的，不需要翻转）
             animKey = this.facingRight ? 'walk_right' : 'walk_left';
+            this.setScale(1, 1);  // 不翻转，使用原始图片
+        } else {
+            // 待机状态（idle 是对称动画，需要根据朝向翻转）
+            animKey = 'idle';
+            this.setScale(this.facingRight ? 1 : -1, 1);
         }
 
         // 只在需要时切换动画
@@ -271,6 +275,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     public die(): void {
         if (this.isDead) return;
 
+        console.log('[Player] 玩家开始死亡');
         this.isDead = true;
         const body = this.body as Phaser.Physics.Arcade.Body;
         if (body) {
@@ -288,6 +293,7 @@ export class Player extends Phaser.GameObjects.Sprite {
             scaleY: 1 * 1.5,
             duration: 500,
             onComplete: () => {
+                console.log('[Player] 死亡动画完成，调用 GameScene.playerDied()');
                 (this.scene as any).playerDied();
             }
         });
@@ -320,7 +326,9 @@ export class Player extends Phaser.GameObjects.Sprite {
     }
 
     destroy(): void {
-        this.scene.events.off('update', this.update, this);
+        if (this.scene && this.scene.events) {
+            this.scene.events.off('update', this.update, this);
+        }
         super.destroy();
     }
 }
