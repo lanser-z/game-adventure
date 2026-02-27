@@ -66,6 +66,19 @@ export class BootScene extends Phaser.Scene {
         console.log('[BootScene] preload 开始');
         console.log('[BootScene] 场景尺寸:', this.cameras.main.width, 'x', this.cameras.main.height);
 
+        // 加载玩家精灵图片
+        const playerImages = [
+            'idle_1', 'idle_2',
+            'walk_left_1', 'walk_left_2',
+            'jump', 'fall'
+        ];
+
+        playerImages.forEach(name => {
+            this.load.image(`player_${name}`, `assets/player/${name}.png`);
+        });
+
+        console.log('[BootScene] 开始加载玩家图片...');
+
         // 创建加载进度条
         const progressBar = this.add.graphics();
         const progressBox = this.add.graphics();

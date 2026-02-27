@@ -1,11 +1,15 @@
 /**
- * 玩家类 - 使用 Image 以获得更好的物理支持
+ * 玩家类 - 使用 Sprite 支持动画
  */
 
 import Phaser from 'phaser';
 import { TouchControls } from './TouchControls';
 
-export class Player extends Phaser.GameObjects.Image {
+// 目标显示尺寸（原图 256x320 缩放到 40x50）
+const DISPLAY_WIDTH = 40;
+const DISPLAY_HEIGHT = 50;
+
+export class Player extends Phaser.GameObjects.Sprite {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private wasd!: any;
     private wasPressed: { up: boolean } = { up: false };
@@ -23,85 +27,17 @@ export class Player extends Phaser.GameObjects.Image {
     // 状态
     private facingRight: boolean = true;
     private isDead: boolean = false;
+    private isGrounded: boolean = false;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        // 创建纹理 - 使用 Canvas API 以兼容微信小游戏
-        const textureKey = 'player-texture';
-        const size = 40;
-        const width = size;
-        const height = size * 1.25;
+        // 使用 player_idle_1 作为默认纹理
+        super(scene, x, y, 'player_idle_1');
 
-        if (!scene.textures.exists(textureKey)) {
-            // 使用 Canvas 创建纹理
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d')!;
+        // 设置显示尺寸（将 256x320 缩放到 40x50）
+        this.setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-            // 绘制茶叶蛋主体
-            ctx.fillStyle = '#F5E6D3';
-            ctx.beginPath();
-            ctx.ellipse(width/2, height/2, size/2, size * 1.25/2, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 裂纹
-            ctx.strokeStyle = '#8B7355';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(size/2 - 8, size/2 - 12);
-            ctx.lineTo(size/2 - 6, size/2 - 2);
-            ctx.lineTo(size/2 - 8, size/2 + 8);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(size/2, size/2 - 14);
-            ctx.lineTo(size/2 + 2, size/2 - 4);
-            ctx.lineTo(size/2, size/2 + 6);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(size/2 + 8, size/2 - 10);
-            ctx.lineTo(size/2 + 6, size/2);
-            ctx.lineTo(size/2 + 8, size/2 + 10);
-            ctx.stroke();
-
-            // 眼睛
-            ctx.fillStyle = '#333333';
-            ctx.beginPath();
-            ctx.arc(size/2 - 7, size/2 - 2, 3, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(size/2 + 7, size/2 - 2, 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 眼神高光
-            ctx.fillStyle = '#FFFFFF';
-            ctx.beginPath();
-            ctx.arc(size/2 - 6, size/2 - 3, 1, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(size/2 + 8, size/2 - 3, 1, 0, Math.PI * 2);
-            ctx.fill();
-
-            // 嘴巴
-            ctx.strokeStyle = '#333333';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(size/2 - 5, size/2 + 8);
-            ctx.lineTo(size/2, size/2 + 11);
-            ctx.lineTo(size/2 + 5, size/2 + 8);
-            ctx.stroke();
-
-            // 将 Canvas 添加到 Phaser 纹理管理器
-            scene.textures.addCanvas(textureKey, canvas);
-            console.log('[Player] 使用 Canvas 创建纹理:', textureKey);
-        }
-
-        // 使用 Image 创建玩家
-        super(scene, x, y, textureKey);
-
-        // 设置显示尺寸
-        this.setDisplaySize(size, size * 1.25);
+        // 创建动画
+        this.createAnimations();
 
         // 添加到场景
         scene.add.existing(this);
@@ -111,12 +47,10 @@ export class Player extends Phaser.GameObjects.Image {
 
         // 设置物理属性
         const body = this.body as Phaser.Physics.Arcade.Body;
-        body.setSize(size, size * 1.25);
+        body.setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         body.setCollideWorldBounds(true);
         body.setBounce(0, 0);
         body.setDragX(500);
-
-        // 确保受重力影响
         body.setAllowGravity(true);
 
         // 设置输入
@@ -124,6 +58,77 @@ export class Player extends Phaser.GameObjects.Image {
 
         // 监听更新事件
         scene.events.on('update', this.update, this);
+
+        // 播放待机动画
+        this.play('idle', true);
+
+        console.log('[Player] 使用图片精灵创建');
+    }
+
+    /**
+     * 创建动画
+     */
+    private createAnimations(): void {
+        const anims = this.anims;
+
+        // 待机动画（呼吸）
+        if (!anims.exists('idle')) {
+            anims.create({
+                key: 'idle',
+                frames: [
+                    { key: 'player_idle_1' },
+                    { key: 'player_idle_2' }
+                ],
+                frameRate: 4,      // 每秒4帧，较慢
+                repeat: -1         // 循环播放
+            });
+        }
+
+        // 左走动画
+        if (!anims.exists('walk_left')) {
+            anims.create({
+                key: 'walk_left',
+                frames: [
+                    { key: 'player_walk_left_1' },
+                    { key: 'player_walk_left_2' }
+                ],
+                frameRate: 8,      // 走路稍快
+                repeat: -1
+            });
+        }
+
+        // 右走动画（复用左走帧，通过 scale.x 翻转）
+        if (!anims.exists('walk_right')) {
+            anims.create({
+                key: 'walk_right',
+                frames: [
+                    { key: 'player_walk_left_1' },
+                    { key: 'player_walk_left_2' }
+                ],
+                frameRate: 8,
+                repeat: -1
+            });
+        }
+
+        // 跳跃动画（单帧）
+        if (!anims.exists('jump')) {
+            anims.create({
+                key: 'jump',
+                frames: [{ key: 'player_jump' }],
+                frameRate: 1
+            });
+        }
+
+        // 下落动画（单帧）
+        if (!anims.exists('fall')) {
+            anims.create({
+                key: 'fall',
+                frames: [{ key: 'player_fall' }],
+                frameRate: 1
+            });
+        }
+
+        console.log('[Player] 动画创建完成');
     }
 
     /**
@@ -176,7 +181,7 @@ export class Player extends Phaser.GameObjects.Image {
         // 如果启用触摸控制，添加触摸输入
         if (this.useTouchControls && this.touchControls) {
             this.touchControls.update();
-            
+
             if (this.touchControls.leftDown) {
                 moveLeft = true;
             }
@@ -220,7 +225,9 @@ export class Player extends Phaser.GameObjects.Image {
     private checkGrounded(): void {
         const body = this.body as Phaser.Physics.Arcade.Body;
 
-        if (body.touching.down || body.blocked.down) {
+        this.isGrounded = body.touching.down || body.blocked.down;
+
+        if (this.isGrounded) {
             this.jumpCount = 0;
         }
     }
@@ -229,7 +236,33 @@ export class Player extends Phaser.GameObjects.Image {
      * 动画
      */
     private animate(): void {
+        const body = this.body as Phaser.Physics.Arcade.Body;
+        const velocityX = body.velocity.x;
+        const velocityY = body.velocity.y;
+
+        // 设置朝向
         this.setScale(this.facingRight ? 1 : -1, 1);
+
+        // 确定应该播放的动画
+        let animKey = 'idle';
+
+        if (!this.isGrounded) {
+            // 空中状态
+            if (velocityY < 0) {
+                animKey = 'jump';   // 上升
+            } else {
+                animKey = 'fall';   // 下落
+            }
+        } else if (Math.abs(velocityX) > 10) {
+            // 移动中
+            animKey = this.facingRight ? 'walk_right' : 'walk_left';
+        }
+
+        // 只在需要时切换动画
+        const currentAnim = this.anims.currentAnim;
+        if (!this.anims.isPlaying || !currentAnim || currentAnim.key !== animKey) {
+            this.play(animKey, true);
+        }
     }
 
     /**
@@ -244,11 +277,14 @@ export class Player extends Phaser.GameObjects.Image {
             body.stop();
         }
 
+        // 停止动画并定格
+        this.anims.stop();
+
         // 死亡动画
         this.scene.tweens.add({
             targets: this,
             alpha: 0,
-            scale: 1.5,
+            scale: this.facingRight ? 1.5 : -1.5,
             duration: 500,
             onComplete: () => {
                 (this.scene as any).playerDied();
@@ -278,6 +314,8 @@ export class Player extends Phaser.GameObjects.Image {
         this.setScale(1, 1);
         this.jumpCount = 0;
         this.setVisible(true);
+        this.facingRight = true;
+        this.play('idle', true);
     }
 
     destroy(): void {
