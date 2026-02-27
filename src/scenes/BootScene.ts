@@ -99,24 +99,16 @@ export class BootScene extends Phaser.Scene {
         });
         percentText.setOrigin(0.5, 0.5);
 
-        // 模拟加载进度（数据已通过 ES 模块导入）
-        let progress = 0;
-        const progressInterval = setInterval(() => {
-            progress += 10;
-            if (progress > 100) progress = 100;
+        // 监听真实加载进度
+        this.load.on('progress', (value: number) => {
             progressBar.clear();
             progressBar.fillStyle(0x4CAF50, 1);
-            progressBar.fillRect(250, 280, 460 * (progress / 100), 30);
-            percentText.setText(`${progress}%`);
-            if (progress >= 100) {
-                clearInterval(progressInterval);
-                this.load.emit('complete');
-            }
-        }, 100);
+            progressBar.fillRect(250, 280, 460 * value, 30);
+            percentText.setText(`${Math.floor(value * 100)}%`);
+        });
 
         this.load.on('complete', () => {
             console.log('[BootScene] 资源加载完成');
-            clearInterval(progressInterval);
             progressBar.destroy();
             progressBox.destroy();
             loadingText.destroy();
