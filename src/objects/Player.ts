@@ -5,17 +5,9 @@
 import Phaser from 'phaser';
 import { TouchControls } from './TouchControls';
 
-// 原始图片尺寸
-const ORIGINAL_WIDTH = 256;
-const ORIGINAL_HEIGHT = 320;
-
-// 目标显示尺寸
+// 图片尺寸和显示尺寸（40x50，1:1）
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 50;
-
-// 计算缩放比例
-const SCALE_X = DISPLAY_WIDTH / ORIGINAL_WIDTH;   // ~0.156
-const SCALE_Y = DISPLAY_HEIGHT / ORIGINAL_HEIGHT; // ~0.156
 
 export class Player extends Phaser.GameObjects.Sprite {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -45,7 +37,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.createAnimations();
 
         // 设置缩放（将 256x320 缩放到 40x50）
-        this.setScale(SCALE_X, SCALE_Y);
+        this.setScale(1, 1);
 
         // 添加到场景
         scene.add.existing(this);
@@ -70,7 +62,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         // 播放待机动画
         this.play('idle', true);
 
-        console.log('[Player] 使用图片精灵创建，缩放比例:', SCALE_X);
+        console.log('[Player] 使用图片精灵创建，缩放比例:', 1);
     }
 
     /**
@@ -105,13 +97,13 @@ export class Player extends Phaser.GameObjects.Sprite {
             });
         }
 
-        // 右走动画（复用左走帧，通过 scale.x 翻转）
+        // 右走动画
         if (!anims.exists('walk_right')) {
             anims.create({
                 key: 'walk_right',
                 frames: [
-                    { key: 'player_walk_left_1' },
-                    { key: 'player_walk_left_2' }
+                    { key: 'player_walk_right_1' },
+                    { key: 'player_walk_right_2' }
                 ],
                 frameRate: 8,
                 repeat: -1
@@ -249,7 +241,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         const velocityY = body.velocity.y;
 
         // 设置朝向和缩放
-        this.setScale(this.facingRight ? SCALE_X : -SCALE_X, SCALE_Y);
+        this.setScale(this.facingRight ? 1 : -1, 1);
 
         // 确定应该播放的动画
         let animKey = 'idle';
@@ -292,8 +284,8 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.scene.tweens.add({
             targets: this,
             alpha: 0,
-            scaleX: this.facingRight ? SCALE_X * 1.5 : -SCALE_X * 1.5,
-            scaleY: SCALE_Y * 1.5,
+            scaleX: this.facingRight ? 1 * 1.5 : -1 * 1.5,
+            scaleY: 1 * 1.5,
             duration: 500,
             onComplete: () => {
                 (this.scene as any).playerDied();
@@ -320,7 +312,7 @@ export class Player extends Phaser.GameObjects.Sprite {
             body.setVelocity(0, 0);
         }
         this.alpha = 1;
-        this.setScale(SCALE_X, SCALE_Y);
+        this.setScale(1, 1);
         this.jumpCount = 0;
         this.setVisible(true);
         this.facingRight = true;

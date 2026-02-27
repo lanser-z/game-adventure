@@ -70,6 +70,7 @@ export class BootScene extends Phaser.Scene {
         const playerImages = [
             'idle_1', 'idle_2',
             'walk_left_1', 'walk_left_2',
+            'walk_right_1', 'walk_right_2',
             'jump', 'fall'
         ];
 
