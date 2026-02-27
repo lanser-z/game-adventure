@@ -149,7 +149,7 @@ export class BootScene extends Phaser.Scene {
         wechatAdapter.init();
 
         // 最大解锁关卡（使用微信适配器读取）
-        const savedProgress = wechatAdapter.getStorageSync('teaEggAdventure');
+        const savedProgress = wechatAdapter.getStorageSync('littleFrogAdventure');
         if (savedProgress) {
             try {
                 const data = JSON.parse(savedProgress);
@@ -167,7 +167,7 @@ export class BootScene extends Phaser.Scene {
         // 设置分享信息
         wechatAdapter.onShareAppMessage(() => {
             return {
-                title: '来玩茶叶蛋大冒险！20个益智关卡等你挑战',
+                title: '来玩小青蛙大冒险！20个益智关卡等你挑战',
                 imageUrl: ''
             };
         });
@@ -192,6 +192,6 @@ export class BootScene extends Phaser.Scene {
             lastPlayTime: Date.now()
         };
 
-        wechatAdapter.setStorageSync('teaEggAdventure', data);
+        wechatAdapter.setStorageSync('littleFrogAdventure', data);
     }
 }

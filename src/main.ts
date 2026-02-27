@@ -1,5 +1,5 @@
 /**
- * 茶叶蛋大冒险 - Phaser 3 主入口文件
+ * 小青蛙大冒险 - Phaser 3 主入口文件
  */
 
 import Phaser from 'phaser';
@@ -38,7 +38,7 @@ export const baseConfig: Phaser.Types.Core.GameConfig = {
 /**
  * 游戏主类
  */
-export class TeaEggGame extends Phaser.Game {
+export class LittleFrogGame extends Phaser.Game {
     constructor(config: Phaser.Types.Core.GameConfig) {
         super(config);
     }
@@ -57,7 +57,7 @@ if (!isMiniGame) {
             ...baseConfig,
             parent: 'game-container'
         };
-        const game = new TeaEggGame(webConfig);
+        const game = new LittleFrogGame(webConfig);
         (window as any).game = game;
 
         // 隐藏加载动画
@@ -71,4 +71,4 @@ if (!isMiniGame) {
 }
 
 // 导出默认
-export default TeaEggGame;
+export default LittleFrogGame;

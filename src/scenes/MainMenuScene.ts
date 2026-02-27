@@ -22,7 +22,7 @@ export class MainMenuScene extends Phaser.Scene {
         console.log('[MainMenuScene] 背景已创建');
 
         // 标题
-        this.titleText = this.add.text(width / 2, height / 4, '茶叶蛋大冒险', {
+        this.titleText = this.add.text(width / 2, height / 4, '小青蛙大冒险', {
             fontSize: '64px',
             fontFamily: 'Arial',
             color: '#ffffff',
@@ -34,7 +34,7 @@ export class MainMenuScene extends Phaser.Scene {
         console.log('[MainMenuScene] 标题已创建');
 
         // 副标题
-        const subtitle = this.add.text(width / 2, height / 4 + 60, 'Tea Egg Adventure', {
+        const subtitle = this.add.text(width / 2, height / 4 + 60, 'Little Frog Adventure', {
             fontSize: '24px',
             fontFamily: 'Arial',
             color: '#cccccc'

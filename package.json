@@ -1,7 +1,7 @@
 {
-  "name": "tea-egg-adventure",
+  "name": "little-frog-adventure",
   "version": "1.0.0",
-  "description": "茶叶蛋大冒险 - Phaser 3 益智解谜游戏",
+  "description": "小青蛙大冒险 - Phaser 3 益智解谜游戏",
   "type": "module",
   "scripts": {
     "dev": "vite",

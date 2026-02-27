@@ -28,7 +28,7 @@ import { platformManager } from './platform/PlatformManager';
 
 // 导入 Phaser 和游戏配置
 import Phaser from 'phaser';
-import { TeaEggGame, baseConfig } from './main';
+import { LittleFrogGame, baseConfig } from './main';
 
 // 类型声明
 declare const wx: any;
@@ -129,11 +129,11 @@ if (typeof wx !== 'undefined') {
     });
 
     // 设置分享功能
-    platformManager.setupShare('来玩茶叶蛋大冒险！');
+    platformManager.setupShare('来玩小青蛙大冒险！');
 }
 
 // 5. 创建游戏实例
-const game = new TeaEggGame(gameConfig);
+const game = new LittleFrogGame(gameConfig);
 (window as any).game = game;
 
 // 6. 启用多指触摸支持

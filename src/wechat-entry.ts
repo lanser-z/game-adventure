@@ -12,7 +12,7 @@ import { platformManager } from './platform/PlatformManager';
 
 // 导入 Phaser 游戏
 import Phaser from 'phaser';
-import { TeaEggGame, baseConfig } from './main';
+import { LittleFrogGame, baseConfig } from './main';
 
 // 微信小游戏：直接执行初始化（不使用 window.onload）
 console.log('[Wechat-INIT] 游戏开始初始化...');
@@ -88,13 +88,13 @@ console.log('[Wechat-INIT] 创建游戏配置...');
             });
 
             // 设置分享
-            platformManager.setupShare('来玩茶叶蛋大冒险！');
+            platformManager.setupShare('来玩小青蛙大冒险！');
         }
     }
 
     // 创建游戏实例
-    console.log('[Wechat-INIT] 创建 TeaEggGame 实例...');
-    const game = new TeaEggGame(gameConfig);
+    console.log('[Wechat-INIT] 创建 LittleFrogGame 实例...');
+    const game = new LittleFrogGame(gameConfig);
     (window as any).game = game;
     console.log('[Wechat-INIT] 游戏实例已创建:', game);
 
