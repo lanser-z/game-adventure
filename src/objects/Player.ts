@@ -5,9 +5,17 @@
 import Phaser from 'phaser';
 import { TouchControls } from './TouchControls';
 
-// 目标显示尺寸（原图 256x320 缩放到 40x50）
+// 原始图片尺寸
+const ORIGINAL_WIDTH = 256;
+const ORIGINAL_HEIGHT = 320;
+
+// 目标显示尺寸
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 50;
+
+// 计算缩放比例
+const SCALE_X = DISPLAY_WIDTH / ORIGINAL_WIDTH;   // ~0.156
+const SCALE_Y = DISPLAY_HEIGHT / ORIGINAL_HEIGHT; // ~0.156
 
 export class Player extends Phaser.GameObjects.Sprite {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -33,11 +41,11 @@ export class Player extends Phaser.GameObjects.Sprite {
         // 使用 player_idle_1 作为默认纹理
         super(scene, x, y, 'player_idle_1');
 
-        // 设置显示尺寸（将 256x320 缩放到 40x50）
-        this.setDisplaySize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-
         // 创建动画
         this.createAnimations();
+
+        // 设置缩放（将 256x320 缩放到 40x50）
+        this.setScale(SCALE_X, SCALE_Y);
 
         // 添加到场景
         scene.add.existing(this);
@@ -62,7 +70,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         // 播放待机动画
         this.play('idle', true);
 
-        console.log('[Player] 使用图片精灵创建');
+        console.log('[Player] 使用图片精灵创建，缩放比例:', SCALE_X);
     }
 
     /**
@@ -240,8 +248,8 @@ export class Player extends Phaser.GameObjects.Sprite {
         const velocityX = body.velocity.x;
         const velocityY = body.velocity.y;
 
-        // 设置朝向
-        this.setScale(this.facingRight ? 1 : -1, 1);
+        // 设置朝向和缩放
+        this.setScale(this.facingRight ? SCALE_X : -SCALE_X, SCALE_Y);
 
         // 确定应该播放的动画
         let animKey = 'idle';
@@ -284,7 +292,8 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.scene.tweens.add({
             targets: this,
             alpha: 0,
-            scale: this.facingRight ? 1.5 : -1.5,
+            scaleX: this.facingRight ? SCALE_X * 1.5 : -SCALE_X * 1.5,
+            scaleY: SCALE_Y * 1.5,
             duration: 500,
             onComplete: () => {
                 (this.scene as any).playerDied();
@@ -311,7 +320,7 @@ export class Player extends Phaser.GameObjects.Sprite {
             body.setVelocity(0, 0);
         }
         this.alpha = 1;
-        this.setScale(1, 1);
+        this.setScale(SCALE_X, SCALE_Y);
         this.jumpCount = 0;
         this.setVisible(true);
         this.facingRight = true;
