@@ -236,7 +236,7 @@ export class BootScene extends Phaser.Scene {
         // 设置分享信息
         wechatAdapter.onShareAppMessage(() => {
             return {
-                title: '来玩小青蛙大冒险！20个益智关卡等你挑战',
+                title: '来玩小青蛙的奇妙冒险！20个益智关卡等你挑战',
                 imageUrl: ''
             };
         });

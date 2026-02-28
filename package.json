@@ -1,7 +1,7 @@
 {
   "name": "little-frog-adventure",
   "version": "1.0.0",
-  "description": "小青蛙大冒险 - Phaser 3 益智解谜游戏",
+  "description": "小青蛙的奇妙冒险 - Phaser 3 益智解谜游戏",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -97,7 +97,7 @@ export class PlatformManager {
     setupShare(title?: string): void {
         if (this.isWechat()) {
             this.adapter.onShareAppMessage(() => ({
-                title: title || '来玩小青蛙大冒险！20个益智关卡等你挑战',
+                title: title || '来玩小青蛙的奇妙冒险！20个益智关卡等你挑战',
                 imageUrl: ''
             }));
             this.adapter.showShareButton();

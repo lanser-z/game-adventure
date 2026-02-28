@@ -1,5 +1,5 @@
 {
-  "description": "小青蛙大冒险 - 微信小游戏版本",
+  "description": "小青蛙的奇妙冒险 - 微信小游戏版本",
   "packOptions": {
     "ignore": [],
     "output": "miniprogram"

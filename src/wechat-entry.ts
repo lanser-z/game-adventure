@@ -88,7 +88,7 @@ console.log('[Wechat-INIT] 创建游戏配置...');
             });
 
             // 设置分享
-            platformManager.setupShare('来玩小青蛙大冒险！');
+            platformManager.setupShare('来玩小青蛙的奇妙冒险！');
         }
     }
 

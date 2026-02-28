@@ -1,5 +1,5 @@
 /**
- * 小青蛙大冒险 - Phaser 3 主入口文件
+ * 小青蛙的奇妙冒险 - Phaser 3 主入口文件
  */
 
 import Phaser from 'phaser';

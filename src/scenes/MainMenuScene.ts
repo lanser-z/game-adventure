@@ -22,7 +22,7 @@ export class MainMenuScene extends Phaser.Scene {
         console.log('[MainMenuScene] 背景已创建');
 
         // 标题
-        this.titleText = this.add.text(width / 2, height / 4, '小青蛙大冒险', {
+        this.titleText = this.add.text(width / 2, height / 4, '小青蛙的奇妙冒险', {
             fontSize: '64px',
             fontFamily: 'Arial',
             color: '#ffffff',

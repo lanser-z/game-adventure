@@ -111,7 +111,7 @@ export class WechatAdapter {
 
         this.wx.onShareAppMessage(() => {
             return {
-                title: '来玩小青蛙大冒险！',
+                title: '来玩小青蛙的奇妙冒险！',
                 imageUrl: ''
             };
         });
