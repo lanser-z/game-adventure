@@ -11,6 +11,7 @@ import { Button } from '../objects/Button';
 import { Enemy } from '../objects/Enemy';
 import { TriggerZone } from '../objects/TriggerZone';
 import { TouchControls } from '../objects/TouchControls';
+import { AudioManager } from '../managers/AudioManager';
 
 export interface LevelConfig {
     levelId: number;
@@ -67,6 +68,7 @@ export class GameScene extends Phaser.Scene {
     private enemies: Enemy[] = [];
     private door!: Door;
     private triggers: TriggerZone[] = [];
+    private audioManager!: AudioManager;
 
     // UI
     private pauseButton!: Phaser.GameObjects.Text;
@@ -87,13 +89,29 @@ export class GameScene extends Phaser.Scene {
 
     init(data: { levelId: number | string }): void {
         this.levelId = data.levelId;
+        // 重置游戏状态
+        this.isGameOver = false;
+        this.isPaused = false;
+        this.gameTime = 0;
+        this.deathCount = 0;
+        console.log('[GameScene] init - 关卡:', this.levelId, '状态已重置');
     }
 
     create(): void {
-        this.loadLevelData();
-
         // 加载关卡数据
         this.loadLevelData();
+
+        // 初始化音频管理器
+        this.audioManager = new AudioManager(this);
+        this.audioManager.init();
+
+        // 监听场景销毁事件，清理音频资源
+        this.events.once('shutdown', () => {
+            console.log('[GameScene] 场景关闭，清理音频资源');
+            if (this.audioManager) {
+                this.audioManager.destroy();
+            }
+        });
 
         // 设置物理世界边界
         this.physics.world.setBounds(0, 0, 2000, 1000);
@@ -112,6 +130,9 @@ export class GameScene extends Phaser.Scene {
 
         // 设置相机
         this.setupCamera();
+
+        // 播放背景音乐
+        this.audioManager.playBackgroundMusic();
 
         // 添加碰撞检测
         this.setupCollisions();
@@ -217,6 +238,7 @@ export class GameScene extends Phaser.Scene {
         // 创建玩家
         const [playerX, playerY] = this.levelConfig.player.startPosition;
         this.player = new Player(this, playerX, playerY);
+        this.player.setAudioManager(this.audioManager);
         this.add.existing(this.player);
 
         // 创建触摸控制（移动端）
@@ -383,6 +405,7 @@ export class GameScene extends Phaser.Scene {
         if (playerBody && playerBody.velocity.y > 0 && player.y < enemy.y - 20) {
             // 踩死敌人
             enemy.die();
+            this.audioManager.playSound('bounce');
             player.bounce();
         } else {
             // 玩家受伤
@@ -397,10 +420,18 @@ export class GameScene extends Phaser.Scene {
         _player: Player,
         door: Door
     ): void {
+        // 防止重复触发（关卡已完成或已死亡）
+        if (this.isGameOver) {
+            console.log('[GameScene] 门碰撞被阻止 - 游戏已结束');
+            return;
+        }
+
         const isOpen = door.isOpenCheck();
-        console.log('[GameScene] 玩家接触门，门状态:', isOpen ? '开启' : '关闭');
+        console.log('[GameScene] 碰到门 - 门是否打开:', isOpen);
         if (isOpen) {
             this.levelComplete();
+        } else {
+            console.log('[GameScene] 门未打开，无法过关');
         }
     }
 
@@ -444,10 +475,12 @@ export class GameScene extends Phaser.Scene {
         if (this.isPaused) {
             this.physics.pause();
             this.pauseButton.setText('继续');
+            this.audioManager.pauseBackgroundMusic();
             this.showPauseMenu();
         } else {
             this.physics.resume();
             this.pauseButton.setText('暂停');
+            this.audioManager.resumeBackgroundMusic();
             this.hidePauseMenu();
         }
     }
@@ -515,6 +548,7 @@ export class GameScene extends Phaser.Scene {
      */
     public playerDied(): void {
         console.log('[GameScene] 玩家死亡，死亡次数:', this.deathCount);
+        this.audioManager.playSound('death');
         this.deathCount++;
         this.time.delayedCall(1000, () => {
             console.log('[GameScene] 1秒后重新开始关卡');
@@ -528,6 +562,7 @@ export class GameScene extends Phaser.Scene {
     private levelComplete(): void {
         console.log('[GameScene] 关卡完成！');
         this.isGameOver = true;
+        this.audioManager.playSound('door');
 
         const { width } = this.cameras.main;
 
@@ -550,6 +585,9 @@ export class GameScene extends Phaser.Scene {
 
         // 3秒后返回或进入下一关
         this.time.delayedCall(3000, () => {
+            // 停止背景音乐，防止下一关重复播放
+            this.audioManager.stopBackgroundMusic();
+
             if (typeof this.levelId === 'number' && this.levelId < 20) {
                 console.log('[GameScene] 进入下一关:', this.levelId + 1);
                 this.scene.start('GameScene', { levelId: this.levelId + 1 });
@@ -564,6 +602,8 @@ export class GameScene extends Phaser.Scene {
      * 重玩关卡
      */
     private restartLevel(): void {
+        // 停止背景音乐，防止重复播放
+        this.audioManager.stopBackgroundMusic();
         this.scene.restart();
     }
 
@@ -571,6 +611,14 @@ export class GameScene extends Phaser.Scene {
      * 退出到菜单
      */
     private quitToMenu(): void {
+        this.audioManager.destroy();
         this.scene.start('MainMenuScene');
+    }
+
+    /**
+     * 获取音频管理器（供 Player 等对象使用）
+     */
+    public getAudioManager(): AudioManager {
+        return this.audioManager;
     }
 }

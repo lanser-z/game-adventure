@@ -5,6 +5,7 @@
 
 import Phaser from 'phaser';
 import { wechatAdapter } from '../platform/WechatAdapter';
+import { AssetsConfig, AssetList } from '../config/AssetsConfig';
 
 // 关卡数据模块 - 使用 @ 别名从 src 目录开始
 // @ts-ignore - JS 文件由 scripts/convert-json-to-js.js 生成
@@ -65,6 +66,13 @@ export class BootScene extends Phaser.Scene {
     preload(): void {
         console.log('[BootScene] preload 开始');
         console.log('[BootScene] 场景尺寸:', this.cameras.main.width, 'x', this.cameras.main.height);
+        console.log('[BootScene] 资源来源:', AssetsConfig.useRemote ? 'CDN' : '本地');
+        if (AssetsConfig.useRemote) {
+            console.log('[BootScene] CDN 地址:', AssetsConfig.remoteBase);
+        }
+
+        // 加载音频资源
+        this.loadAudioAssets();
 
         // 微信小游戏不能直接通过 load.image 加载本地文件
         // 需要在 create 中手动处理
@@ -107,6 +115,29 @@ export class BootScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * 加载音频资源（支持远程 CDN）
+     */
+    private loadAudioAssets(): void {
+        // 背景音乐
+        this.load.audio('bgm_main', AssetList.getAudioPath('bgm_main.mp3'));
+
+        // 音效
+        const soundEffects = ['jump', 'doubleJump', 'collect', 'door', 'death', 'bounce', 'button'];
+        soundEffects.forEach(effect => {
+            this.load.audio(`sfx_${effect}`, AssetList.getAudioPath(`sfx_${effect}.mp3`));
+        });
+
+        console.log(`[BootScene] 音频资源路径: ${AssetsConfig.useRemote ? AssetsConfig.remoteBase : AssetsConfig.localBase}`);
+
+        // 音频加载错误处理（可选文件）
+        this.load.on('loaderror', (fileObj: any) => {
+            if (fileObj.type === 'audio') {
+                console.log(`[BootScene] 音频文件加载失败（可选）: ${fileObj.key}`);
+            }
+        });
+    }
+
     create(): void {
         console.log('[BootScene] create 开始');
 
@@ -118,19 +149,17 @@ export class BootScene extends Phaser.Scene {
     }
 
     /**
-     * 加载玩家图片（微信小游戏特殊处理）
+     * 加载玩家图片（支持远程 CDN）
      */
     private async loadPlayerImages(): Promise<void> {
-        const playerImages = [
-            'idle_1', 'idle_2',
-            'walk_left_1', 'walk_left_2',
-            'walk_right_1', 'walk_right_2',
-            'jump', 'fall'
-        ];
+        const playerImages = AssetList.playerImages;
 
         const promises = playerImages.map(name => {
             return new Promise<void>((resolve, reject) => {
                 const img = new Image();
+                // 支持跨域加载
+                img.crossOrigin = 'anonymous';
+
                 img.onload = () => {
                     // 创建 Canvas 纹理
                     const canvas = document.createElement('canvas');
@@ -141,14 +170,15 @@ export class BootScene extends Phaser.Scene {
 
                     // 添加到 Phaser 纹理管理器
                     this.textures.addCanvas(`player_${name}`, canvas);
-                    console.log(`[BootScene] 加载玩家图片: ${name}`);
+                    console.log(`[BootScene] 加载玩家图片: ${name} (来源: ${AssetsConfig.useRemote ? '远程' : '本地'})`);
                     resolve();
                 };
                 img.onerror = () => {
                     console.error(`[BootScene] 加载玩家图片失败: ${name}`);
                     reject(new Error(`Failed to load ${name}`));
                 };
-                img.src = `assets/player/${name}.png`;
+                // 使用配置的 URL
+                img.src = AssetList.getPlayerImagePath(name);
             });
         });
 

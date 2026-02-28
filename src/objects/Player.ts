@@ -14,6 +14,9 @@ export class Player extends Phaser.GameObjects.Sprite {
     private wasd!: any;
     private wasPressed: { up: boolean } = { up: false };
 
+    // 音效
+    private audioManager: any = null;
+
     // 触摸控制
     private touchControls: TouchControls | null = null;
     private useTouchControls: boolean = false;
@@ -151,6 +154,13 @@ export class Player extends Phaser.GameObjects.Sprite {
     }
 
     /**
+     * 设置音频管理器
+     */
+    public setAudioManager(audioManager: any): void {
+        this.audioManager = audioManager;
+    }
+
+    /**
      * 启用/禁用触摸控制
      */
     public setTouchEnabled(enabled: boolean): void {
@@ -214,6 +224,10 @@ export class Player extends Phaser.GameObjects.Sprite {
         if (jumpPressed && !this.wasPressed.up && this.jumpCount < this.maxJumps) {
             body.setVelocityY(this.jumpForce);
             this.jumpCount++;
+            // 播放跳跃音效
+            if (this.audioManager) {
+                this.audioManager.playSound(this.jumpCount > 1 ? 'doubleJump' : 'jump');
+            }
         }
 
         this.wasPressed.up = jumpPressed;
