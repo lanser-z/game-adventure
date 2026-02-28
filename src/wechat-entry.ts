@@ -7,58 +7,6 @@
 declare const wx: any;
 declare const GameGlobal: any;
 
-// ============================================================================
-// 微信 XHR 适配器补丁 - 修复 Phaser 兼容性问题
-// ============================================================================
-(() => {
-    const XMLHttpRequest = (window as any).XMLHttpRequest;
-    if (!XMLHttpRequest) return;
-
-    const OriginalXHR = XMLHttpRequest.prototype;
-
-    // 修补 send 方法
-    const originalSend = OriginalXHR.send;
-    OriginalXHR.send = function(this: any, ...args: any[]) {
-        const _this = this;
-
-        // 确保事件处理器有正确的 target 引用
-        const _onload = this.onload;
-        const _onerror = this.onerror;
-        const _onprogress = this.onprogress;
-
-        this.onload = function(event: any) {
-            if (event && !event.target) {
-                event.target = _this;
-            }
-            if (_onload) {
-                return _onload.call(_this, event);
-            }
-        };
-
-        this.onerror = function(event: any) {
-            if (event && !event.target) {
-                event.target = _this;
-            }
-            if (_onerror) {
-                return _onerror.call(_this, event);
-            }
-        };
-
-        this.onprogress = function(event: any) {
-            if (event && !event.target) {
-                event.target = _this;
-            }
-            if (_onprogress) {
-                return _onprogress.call(_this, event);
-            }
-        };
-
-        return originalSend.apply(this, args);
-    };
-})();
-// ============================================================================
-
-
 // 导入平台适配器
 import { platformManager } from './platform/PlatformManager';
 

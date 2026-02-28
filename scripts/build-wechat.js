@@ -53,7 +53,7 @@ if (jsFiles.length > 0) {
     console.log(`[Build] 找到入口文件: ${wechatJsFile}`);
 
     // 微信小游戏 game.js 必须使用 require
-    // 正确顺序：MutationObserver.js → symbol.js → weapp-adapter.js → document-polyfill.js → 游戏代码
+    // 正确顺序：MutationObserver.js → symbol.js → weapp-adapter.js → XHR补丁 → document-polyfill.js → 游戏代码
     const wechatEntryJs = `
 // 微信小游戏入口文件
 console.log('[game.js] 开始加载微信小游戏...');
@@ -70,11 +70,94 @@ require('./assets/symbol.js');
 console.log('[game.js] 加载 weapp-adapter.js');
 require('./assets/weapp-adapter.js');
 
-// 4. document polyfill (添加 Phaser 3 需要的 document 方法)
+// 4. XHR 补丁 (必须在 weapp-adapter 之后立即应用)
+console.log('[game.js] 应用 XHR 补丁...');
+(function() {
+    var proto = window.XMLHttpRequest.prototype;
+
+    // 包装事件处理器设置，确保处理器收到正确的 event 对象
+    function wrapEventProperty(xhr, propName) {
+        var value = xhr[propName];
+        if (value && typeof value === 'function' && !value._xhrWrapped) {
+            xhr[propName] = function(event) {
+                // 如果 event 没有 target 属性，添加它
+                if (!event || typeof event !== 'object') {
+                    event = { type: propName.substring(2) };
+                }
+                if (!event.target) {
+                    Object.defineProperty(event, 'target', {
+                        value: xhr,
+                        writable: false,
+                        configurable: true
+                    });
+                }
+                if (!event.currentTarget) {
+                    Object.defineProperty(event, 'currentTarget', {
+                        value: xhr,
+                        writable: false,
+                        configurable: true
+                    });
+                }
+                return value.call(xhr, event);
+            };
+            xhr[propName]._xhrWrapped = true;
+            console.log('[XHR-Patch] 已包装 ' + propName + ' 处理器');
+        }
+    }
+
+    // 使用 defineProperty 拦截属性设置
+    var eventProps = ['onload', 'onerror', 'onabort', 'onloadstart', 'onloadend', 'onprogress', 'onreadystatechange'];
+    eventProps.forEach(function(prop) {
+        try {
+            Object.defineProperty(proto, prop, {
+                get: function() {
+                    return this['_xhr_' + prop];
+                },
+                set: function(value) {
+                    if (value && typeof value === 'function' && !value._xhrWrapper) {
+                        var xhr = this;
+                        var wrapped = function(event) {
+                            // 确保有正确的 event 对象
+                            if (!event || typeof event !== 'object') {
+                                event = { type: prop.substring(2) };
+                            }
+                            if (!event.target) {
+                                Object.defineProperty(event, 'target', {
+                                    value: xhr,
+                                    writable: false,
+                                    configurable: true
+                                });
+                            }
+                            if (!event.currentTarget) {
+                                Object.defineProperty(event, 'currentTarget', {
+                                    value: xhr,
+                                    writable: false,
+                                    configurable: true
+                                });
+                            }
+                            return value.call(xhr, event);
+                        };
+                        wrapped._xhrWrapper = true;
+                        this['_xhr_' + prop] = wrapped;
+                    } else {
+                        this['_xhr_' + prop] = value;
+                    }
+                },
+                configurable: true
+            });
+        } catch (e) {
+            console.log('[XHR-Patch] 无法拦截 ' + prop + ':', e.message);
+        }
+    });
+
+    console.log('[XHR-Patch] XHR 事件属性拦截已应用');
+})();
+
+// 5. document polyfill (添加 Phaser 3 需要的 document 方法)
 console.log('[game.js] 加载 document-polyfill.js');
 require('./assets/document-polyfill.js');
 
-// 5. 加载游戏代码
+// 6. 加载游戏代码
 console.log('[game.js] 加载游戏代码: ${wechatJsFile}');
 require('./assets/${wechatJsFile}');
 
