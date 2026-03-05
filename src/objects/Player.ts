@@ -259,26 +259,25 @@ export class Player extends Phaser.GameObjects.Sprite {
         const velocityX = body.velocity.x;
         const velocityY = body.velocity.y;
 
-        // 确定应该播放的动画
+        // 根据实际速度方向确定动画
         let animKey = 'idle';
 
         if (!this.isGrounded) {
             // 空中状态
             if (velocityY < 0) {
-                animKey = 'jump';   // 上升
+                animKey = 'jump';
             } else {
-                animKey = 'fall';   // 下落
+                animKey = 'fall';
             }
-            // 使用 flipX 翻转视觉，不影响物理身体
-            this.setFlipX(!this.facingRight);
-        } else if (Math.abs(velocityX) > 10) {
-            // 移动中（walk_left 和 walk_right 是独立的，不需要翻转）
-            animKey = this.facingRight ? 'walk_right' : 'walk_left';
+        } else if (velocityX > 10) {
+            // 向右移动 - 直接使用原始图片，不需要翻转
+            animKey = 'walk_right';
+        } else if (velocityX < -10) {
+            // 向左移动 - 直接使用原始图片，不需要翻转
+            animKey = 'walk_left';
         } else {
-            // 待机状态
+            // 待机状态 - 使用 idle 动画的翻转状态
             animKey = 'idle';
-            // 使用 flipX 翻转视觉，不影响物理身体
-            this.setFlipX(!this.facingRight);
         }
 
         // 只在需要时切换动画
