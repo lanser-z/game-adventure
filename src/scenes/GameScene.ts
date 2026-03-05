@@ -335,10 +335,10 @@ export class GameScene extends Phaser.Scene {
         const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
         if (playerBody) {
             this.debugGraphics.lineStyle(2, 0xff0000);
-            // body.x/y 是中心点，需要减去一半得到左上角
+            // 使用 body.left/top 获取物理身体的实际边界
             this.debugGraphics.strokeRect(
-                playerBody.x - playerBody.width / 2,
-                playerBody.y - playerBody.height / 2,
+                playerBody.left,
+                playerBody.top,
                 playerBody.width,
                 playerBody.height
             );
@@ -350,8 +350,8 @@ export class GameScene extends Phaser.Scene {
             if (body) {
                 this.debugGraphics.lineStyle(2, 0x00ff00);
                 this.debugGraphics.strokeRect(
-                    body.x - body.width / 2,
-                    body.y - body.height / 2,
+                    body.left,
+                    body.top,
                     body.width,
                     body.height
                 );
@@ -364,8 +364,8 @@ export class GameScene extends Phaser.Scene {
             if (body) {
                 this.debugGraphics.lineStyle(2, 0x0000ff);
                 this.debugGraphics.strokeRect(
-                    body.x - body.width / 2,
-                    body.y - body.height / 2,
+                    body.left,
+                    body.top,
                     body.width,
                     body.height
                 );

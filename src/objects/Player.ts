@@ -263,22 +263,22 @@ export class Player extends Phaser.GameObjects.Sprite {
         let animKey = 'idle';
 
         if (!this.isGrounded) {
-            // 空中状态（idle、jump、fall 是对称动画，需要根据朝向翻转）
+            // 空中状态
             if (velocityY < 0) {
                 animKey = 'jump';   // 上升
             } else {
                 animKey = 'fall';   // 下落
             }
-            // 对称动画：根据朝向设置翻转
-            this.setScale(this.facingRight ? 1 : -1, 1);
+            // 使用 flipX 翻转视觉，不影响物理身体
+            this.setFlipX(!this.facingRight);
         } else if (Math.abs(velocityX) > 10) {
             // 移动中（walk_left 和 walk_right 是独立的，不需要翻转）
             animKey = this.facingRight ? 'walk_right' : 'walk_left';
-            this.setScale(1, 1);  // 不翻转，使用原始图片
         } else {
-            // 待机状态（idle 是对称动画，需要根据朝向翻转）
+            // 待机状态
             animKey = 'idle';
-            this.setScale(this.facingRight ? 1 : -1, 1);
+            // 使用 flipX 翻转视觉，不影响物理身体
+            this.setFlipX(!this.facingRight);
         }
 
         // 只在需要时切换动画
@@ -305,11 +305,14 @@ export class Player extends Phaser.GameObjects.Sprite {
         this.anims.stop();
 
         // 死亡动画
+        // 使用 flipX 翻转视觉，scale 放大实现死亡效果
+        const isFlipped = !this.facingRight;
+        this.setFlipX(isFlipped);
         this.scene.tweens.add({
             targets: this,
             alpha: 0,
-            scaleX: this.facingRight ? 1 * 1.5 : -1 * 1.5,
-            scaleY: 1 * 1.5,
+            scaleX: 1.5,
+            scaleY: 1.5,
             duration: 500,
             onComplete: () => {
                 console.log('[Player] 死亡动画完成，调用 GameScene.playerDied()');
@@ -338,6 +341,7 @@ export class Player extends Phaser.GameObjects.Sprite {
         }
         this.alpha = 1;
         this.setScale(1, 1);
+        this.setFlipX(false);  // 重置翻转状态
         this.jumpCount = 0;
         this.setVisible(true);
         this.facingRight = true;
