@@ -4,11 +4,16 @@
 
 import Phaser from 'phaser';
 
-export class PushBlock extends Phaser.GameObjects.Rectangle {
+export class PushBlock extends Phaser.GameObjects.Image {
     declare body: Phaser.Physics.Arcade.Body;
 
     constructor(scene: Phaser.Scene, x: number, y: number, width: number = 50, height: number = 50) {
-        super(scene, x, y, width, height, 0xDEB887);
+        // 先创建临时纹理
+        const texture = PushBlock.createCrateTexture(scene, width, height);
+
+        super(scene, x, y, texture);
+        this.setOrigin(0, 0);
+        this.setDisplaySize(width, height);
 
         // 添加物理
         scene.physics.add.existing(this);
@@ -20,37 +25,47 @@ export class PushBlock extends Phaser.GameObjects.Rectangle {
         body.setBounce(0, 0);
         body.setMass(2);
         body.setDragX(400);
-
-        // 绘制箱子纹理
-        this.drawCrateTexture();
+        body.setSize(width, height);
 
         // 监听碰撞以处理推动
         scene.events.on('update', this.update, this);
     }
 
     /**
-     * 绘制木箱纹理
+     * 创建木箱纹理
      */
-    private drawCrateTexture(): void {
-        this.setStrokeStyle(2, 0x333333, 1);
-        this.setFillStyle(0xDEB887, 1);
+    private static createCrateTexture(scene: Phaser.Scene, width: number, height: number): Phaser.Textures.Texture {
+        const key = `pushblock_${width}x${height}`;
+
+        // 检查纹理是否已存在
+        if (scene.textures.exists(key)) {
+            return scene.textures.get(key);
+        }
+
+        // 使用 Graphics 绘制
+        const graphics = scene.add.graphics();
+        graphics.fillStyle(0xDEB887, 1);
+        graphics.fillRect(0, 0, width, height);
+
+        graphics.lineStyle(2, 0x333333, 1);
+        graphics.strokeRect(0, 0, width, height);
 
         // 绘制木箱交叉线
-        const graphics = this.scene.add.graphics();
-        const x = this.x;
-        const y = this.y;
-        const w = this.width;
-        const h = this.height;
-
         graphics.lineStyle(1, 0x8B7355, 0.8);
-        graphics.lineBetween(x - w/2 + 5, y - h/2 + 5, x + w/2 - 5, y + h/2 - 5);
-        graphics.lineBetween(x + w/2 - 5, y - h/2 + 5, x - w/2 + 5, y + h/2 - 5);
+        graphics.lineBetween(5, 5, width - 5, height - 5);
+        graphics.lineBetween(width - 5, 5, 5, height - 5);
 
         // 添加木纹线
-        graphics.lineBetween(x - w/2 + 10, y - h/2, x - w/2 + 10, y + h/2);
-        graphics.lineBetween(x + w/2 - 10, y - h/2, x + w/2 - 10, y + h/2);
-        graphics.lineBetween(x - w/2, y - h/2 + 15, x + w/2, y - h/2 + 15);
-        graphics.lineBetween(x - w/2, y + h/2 - 15, x + w/2, y + h/2 - 15);
+        graphics.lineBetween(10, 0, 10, height);
+        graphics.lineBetween(width - 10, 0, width - 10, height);
+        graphics.lineBetween(0, 15, width, 15);
+        graphics.lineBetween(0, height - 15, width, height - 15);
+
+        // 生成纹理
+        graphics.generateTexture(key, width, height);
+        graphics.destroy();
+
+        return scene.textures.get(key);
     }
 
     public update(): void {

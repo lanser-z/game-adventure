@@ -1,0 +1,28 @@
+{
+  "levelId": 36,
+  "name": "多重移动",
+  "gravity": 980,
+  "player": {
+    "startPosition": [60, 200],
+    "jumpForce": -480,
+    "moveSpeed": 190,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [40, 350], "size": [100, 35] },
+    { "type": "moving", "position": [170, 400, 0], "size": [70, 25], "path": [[170, 400], [270, 400]], "speed": 120 },
+    { "type": "moving", "position": [330, 350, 0], "size": [60, 25], "path": [[330, 350], [330, 280]], "speed": 85 },
+    { "type": "moving", "position": [430, 280, 0], "size": [70, 25], "path": [[430, 280], [530, 280]], "speed": 130 },
+    { "type": "moving", "position": [590, 330, 0], "size": [60, 25], "path": [[590, 330], [590, 400]], "speed": 90 },
+    { "type": "moving", "position": [690, 400, 0], "size": [70, 25], "path": [[690, 400], [810, 400]], "speed": 140 },
+    { "type": "static", "position": [880, 350], "size": [120, 35] },
+    { "type": "static", "position": [1020, 280], "size": [100, 30] }
+  ],
+  "blocks": [],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [],
+  "door": { "position": [1070, 220], "requires": [] },
+  "enemies": []
+}

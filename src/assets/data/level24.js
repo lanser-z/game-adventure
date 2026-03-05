@@ -1,0 +1,141 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 24,
+  "name": "推箱解谜",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      70,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 180,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        420
+      ],
+      "size": [
+        180,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        280,
+        380
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        420,
+        380
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        560,
+        320
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        700,
+        320
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        840,
+        260
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        1000,
+        180
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        140,
+        370
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "type": "pressure",
+      "position": [
+        730,
+        290
+      ],
+      "target": "btn1",
+      "requiredWeight": 1
+    }
+  ],
+  "door": {
+    "position": [
+      1050,
+      120
+    ],
+    "requires": [
+      "btn1"
+    ]
+  },
+  "enemies": []
+};

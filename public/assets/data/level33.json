@@ -1,0 +1,31 @@
+{
+  "levelId": 33,
+  "name": "混乱地带",
+  "gravity": 980,
+  "player": {
+    "startPosition": [60, 200],
+    "jumpForce": -480,
+    "moveSpeed": 190,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [40, 400], "size": [120, 35] },
+    { "type": "moving", "position": [200, 380, 0], "size": [70, 25], "path": [[200, 380], [300, 380]], "speed": 130 },
+    { "type": "static", "position": [340, 400], "size": [80, 30] },
+    { "type": "moving", "position": [460, 350, 0], "size": [70, 25], "path": [[460, 350], [460, 280]], "speed": 90 },
+    { "type": "static", "position": [560, 280], "size": [80, 30] },
+    { "type": "moving", "position": [680, 400, 0], "size": [70, 25], "path": [[680, 400], [800, 400]], "speed": 140 },
+    { "type": "static", "position": [860, 350], "size": [100, 35] },
+    { "type": "static", "position": [980, 280], "size": [100, 30] }
+  ],
+  "blocks": [],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [],
+  "door": { "position": [1030, 220], "requires": [] },
+  "enemies": [
+    { "type": "patrol", "position": [360, 370], "range": [350, 390], "speed": 70 },
+    { "type": "patrol", "position": [880, 320], "range": [870, 930], "speed": 75 }
+  ]
+}

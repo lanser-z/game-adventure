@@ -1,0 +1,166 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 28,
+  "name": "移动险境",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 185,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        350
+      ],
+      "size": [
+        100,
+        35
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        180,
+        400,
+        0
+      ],
+      "size": [
+        80,
+        25
+      ],
+      "path": [
+        [
+          180,
+          400
+        ],
+        [
+          320,
+          400
+        ]
+      ],
+      "speed": 120
+    },
+    {
+      "type": "moving",
+      "position": [
+        360,
+        350,
+        0
+      ],
+      "size": [
+        70,
+        25
+      ],
+      "path": [
+        [
+          360,
+          350
+        ],
+        [
+          360,
+          280
+        ]
+      ],
+      "speed": 80
+    },
+    {
+      "type": "static",
+      "position": [
+        480,
+        280
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        600,
+        350,
+        0
+      ],
+      "size": [
+        70,
+        25
+      ],
+      "path": [
+        [
+          600,
+          350
+        ],
+        [
+          740,
+          350
+        ]
+      ],
+      "speed": 130
+    },
+    {
+      "type": "static",
+      "position": [
+        800,
+        280
+      ],
+      "size": [
+        100,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        920,
+        200
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      970,
+      140
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        820,
+        250
+      ],
+      "range": [
+        800,
+        900
+      ],
+      "speed": 60
+    }
+  ]
+};

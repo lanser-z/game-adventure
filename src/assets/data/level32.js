@@ -1,0 +1,152 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 32,
+  "name": "箱子桥梁",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 180,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        400
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        250,
+        400
+      ],
+      "size": [
+        60,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        400,
+        400
+      ],
+      "size": [
+        60,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        550,
+        380
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        700,
+        350
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        830,
+        320
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        960,
+        280
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        120,
+        350
+      ],
+      "size": [
+        50,
+        50
+      ]
+    },
+    {
+      "type": "pushable",
+      "position": [
+        170,
+        350
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "type": "pressure",
+      "position": [
+        580,
+        350
+      ],
+      "target": "btn1",
+      "requiredWeight": 1
+    }
+  ],
+  "door": {
+    "position": [
+      1010,
+      220
+    ],
+    "requires": [
+      "btn1"
+    ]
+  },
+  "enemies": []
+};

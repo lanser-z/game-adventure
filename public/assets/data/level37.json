@@ -1,0 +1,32 @@
+{
+  "levelId": 37,
+  "name": "密集敌人",
+  "gravity": 980,
+  "player": {
+    "startPosition": [60, 200],
+    "jumpForce": -480,
+    "moveSpeed": 200,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [40, 400], "size": [250, 40] },
+    { "type": "static", "position": [330, 400], "size": [250, 40] },
+    { "type": "static", "position": [620, 400], "size": [250, 40] },
+    { "type": "static", "position": [910, 350], "size": [150, 35] },
+    { "type": "static", "position": [1080, 280], "size": [100, 30] }
+  ],
+  "blocks": [],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [],
+  "door": { "position": [1130, 220], "requires": [] },
+  "enemies": [
+    { "type": "patrol", "position": [100, 370], "range": [60, 200], "speed": 70 },
+    { "type": "patrol", "position": [200, 370], "range": [160, 280], "speed": 75 },
+    { "type": "patrol", "position": [400, 370], "range": [350, 490], "speed": 80 },
+    { "type": "patrol", "position": [500, 370], "range": [450, 560], "speed": 85 },
+    { "type": "patrol", "position": [700, 370], "range": [640, 790], "speed": 90 },
+    { "type": "patrol", "position": [800, 370], "range": [740, 890], "speed": 95 }
+  ]
+}

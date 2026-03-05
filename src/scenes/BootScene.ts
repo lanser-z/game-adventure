@@ -7,55 +7,8 @@ import Phaser from 'phaser';
 import { wechatAdapter } from '../platform/WechatAdapter';
 import { AssetsConfig, AssetList } from '../config/AssetsConfig';
 
-// 关卡数据模块 - 使用 @ 别名从 src 目录开始
-// @ts-ignore - JS 文件由 scripts/convert-json-to-js.js 生成
-import level1Module from '@/assets/data/level1.js';
-// @ts-ignore
-import level2Module from '@/assets/data/level2.js';
-// @ts-ignore
-import level3Module from '@/assets/data/level3.js';
-// @ts-ignore
-import level4Module from '@/assets/data/level4.js';
-// @ts-ignore
-import level5Module from '@/assets/data/level5.js';
-// @ts-ignore
-import level6Module from '@/assets/data/level6.js';
-// @ts-ignore
-import level7Module from '@/assets/data/level7.js';
-// @ts-ignore
-import level8Module from '@/assets/data/level8.js';
-// @ts-ignore
-import level9Module from '@/assets/data/level9.js';
-// @ts-ignore
-import level10Module from '@/assets/data/level10.js';
-// @ts-ignore
-import level11Module from '@/assets/data/level11.js';
-// @ts-ignore
-import level12Module from '@/assets/data/level12.js';
-// @ts-ignore
-import level13Module from '@/assets/data/level13.js';
-// @ts-ignore
-import level14Module from '@/assets/data/level14.js';
-// @ts-ignore
-import level15Module from '@/assets/data/level15.js';
-// @ts-ignore
-import level16Module from '@/assets/data/level16.js';
-// @ts-ignore
-import level17Module from '@/assets/data/level17.js';
-// @ts-ignore
-import level18Module from '@/assets/data/level18.js';
-// @ts-ignore
-import level19Module from '@/assets/data/level19.js';
-// @ts-ignore
-import level20Module from '@/assets/data/level20.js';
-
-// 关卡数据映射
-const levelDataMap: Record<number, any> = {
-    1: level1Module, 2: level2Module, 3: level3Module, 4: level4Module, 5: level5Module,
-    6: level6Module, 7: level7Module, 8: level8Module, 9: level9Module, 10: level10Module,
-    11: level11Module, 12: level12Module, 13: level13Module, 14: level14Module, 15: level15Module,
-    16: level16Module, 17: level17Module, 18: level18Module, 19: level19Module, 20: level20Module
-};
+// 总关卡数
+const TOTAL_LEVELS = 60;
 
 export class BootScene extends Phaser.Scene {
     constructor() {
@@ -73,6 +26,9 @@ export class BootScene extends Phaser.Scene {
 
         // 加载音频资源
         this.loadAudioAssets();
+
+        // 动态加载所有关卡 JSON 文件
+        this.loadLevelJsons();
 
         // 微信小游戏不能直接通过 load.image 加载本地文件
         // 需要在 create 中手动处理
@@ -134,8 +90,25 @@ export class BootScene extends Phaser.Scene {
         this.load.on('loaderror', (fileObj: any) => {
             if (fileObj.type === 'audio') {
                 console.log(`[BootScene] 音频文件加载失败（可选）: ${fileObj.key}`);
+            } else if (fileObj.type === 'json') {
+                console.warn(`[BootScene] JSON 文件加载失败: ${fileObj.key} from ${fileObj.url}`);
+            } else {
+                console.warn(`[BootScene] 资源加载失败: ${fileObj.key} (${fileObj.type})`);
             }
         });
+    }
+
+    /**
+     * 动态加载关卡 JSON 文件
+     */
+    private loadLevelJsons(): void {
+        console.log('[BootScene] 开始加载关卡 JSON 文件...');
+        for (let i = 1; i <= TOTAL_LEVELS; i++) {
+            const key = `level${i}`;
+            const url = AssetsConfig.getLevelJsonUrl(i);
+            this.load.json(key, url);
+        }
+        console.log(`[BootScene] 已添加 ${TOTAL_LEVELS} 个关卡 JSON 到加载队列`);
     }
 
     create(): void {
@@ -189,15 +162,19 @@ export class BootScene extends Phaser.Scene {
      * 继续创建（在图片加载完成后）
      */
     private continueCreate(): void {
-        // 将关卡数据存入缓存，供 GameScene 使用
-        console.log('[BootScene] 将关卡数据存入缓存...');
-        for (let i = 1; i <= 20; i++) {
-            const key = `level${i}`;
-            const data = levelDataMap[i];
-            // 使用 Phaser 3 JSON 缓存 API
-            this.cache.json.add(key, data);
-            console.log(`[BootScene] 缓存关卡数据: ${key}`);
-        }
+        // 关卡数据已在 preload 中通过 Phaser Loader 加载并自动缓存
+        // Phaser 的 loader 会自动将 JSON 数据存入 cache.json
+        console.log('[BootScene] 关卡 JSON 已通过 Loader 自动缓存');
+
+        // 验证部分关卡数据已加载
+        const sampleKeys = ['level1', 'level2', 'level10'];
+        sampleKeys.forEach(key => {
+            if (this.cache.json.exists(key)) {
+                console.log(`[BootScene] 验证缓存: ${key} 已就绪`);
+            } else {
+                console.warn(`[BootScene] 警告: ${key} 未找到`);
+            }
+        });
 
         // 初始化全局数据
         this.initGlobalData();
@@ -212,7 +189,9 @@ export class BootScene extends Phaser.Scene {
      */
     private initGlobalData(): void {
         // 游戏总关卡数
-        this.registry.set('totalLevels', 20);
+        console.log(`[BootScene] 设置 totalLevels = ${TOTAL_LEVELS}`);
+        this.registry.set('totalLevels', TOTAL_LEVELS);
+        console.log(`[BootScene] 验证: registry.get('totalLevels') = ${this.registry.get('totalLevels')}`);
 
         // 初始化微信适配器
         wechatAdapter.init();
@@ -236,7 +215,7 @@ export class BootScene extends Phaser.Scene {
         // 设置分享信息
         wechatAdapter.onShareAppMessage(() => {
             return {
-                title: '来玩小青蛙的奇妙冒险！20个益智关卡等你挑战',
+                title: '来玩小青蛙的奇妙冒险！60个益智关卡等你挑战',
                 imageUrl: ''
             };
         });

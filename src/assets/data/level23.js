@@ -1,0 +1,143 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 23,
+  "name": "巡逻危机",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      70,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 185,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        400
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        220,
+        400
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        420,
+        350
+      ],
+      "size": [
+        120,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        580,
+        350
+      ],
+      "size": [
+        150,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        780,
+        280
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        950,
+        200
+      ],
+      "size": [
+        120,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      1000,
+      140
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        260,
+        370
+      ],
+      "range": [
+        230,
+        340
+      ],
+      "speed": 60
+    },
+    {
+      "type": "patrol",
+      "position": [
+        630,
+        320
+      ],
+      "range": [
+        590,
+        700
+      ],
+      "speed": 70
+    },
+    {
+      "type": "patrol",
+      "position": [
+        820,
+        250
+      ],
+      "range": [
+        790,
+        880
+      ],
+      "speed": 75
+    }
+  ]
+};

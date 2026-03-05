@@ -1,0 +1,187 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 29,
+  "name": "三重考验",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 185,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        420
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        200,
+        420
+      ],
+      "size": [
+        100,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        340,
+        380
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        460,
+        420,
+        0
+      ],
+      "size": [
+        80,
+        25
+      ],
+      "path": [
+        [
+          460,
+          420
+        ],
+        [
+          580,
+          420
+        ]
+      ],
+      "speed": 110
+    },
+    {
+      "type": "static",
+      "position": [
+        640,
+        380
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        760,
+        320
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        900,
+        260
+      ],
+      "size": [
+        120,
+        35
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        130,
+        370
+      ],
+      "size": [
+        50,
+        50
+      ]
+    },
+    {
+      "type": "pushable",
+      "position": [
+        230,
+        370
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "type": "pressure",
+      "position": [
+        360,
+        350
+      ],
+      "target": "btn1",
+      "requiredWeight": 1
+    },
+    {
+      "type": "pressure",
+      "position": [
+        790,
+        290
+      ],
+      "target": "btn2",
+      "requiredWeight": 1
+    }
+  ],
+  "door": {
+    "position": [
+      960,
+      200
+    ],
+    "requires": [
+      "btn1",
+      "btn2"
+    ]
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        800,
+        290
+      ],
+      "range": [
+        770,
+        890
+      ],
+      "speed": 65
+    }
+  ]
+};

@@ -58,6 +58,15 @@ export const AssetsConfig = {
      */
     getDataUrl(path: string): string {
         return this.getUrl(`data/${path}`);
+    },
+
+    /**
+     * 获取关卡 JSON 文件 URL
+     * @param levelId 关卡 ID
+     * @returns JSON 文件完整 URL
+     */
+    getLevelJsonUrl(levelId: number): string {
+        return this.getDataUrl(`level${levelId}.json`);
     }
 };
 

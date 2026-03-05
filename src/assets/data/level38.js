@@ -1,0 +1,165 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 38,
+  "name": "垂直迷宫",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      100,
+      550
+    ],
+    "jumpForce": -500,
+    "moveSpeed": 190,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        70,
+        600
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        200,
+        540
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        200,
+        460
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        320,
+        400
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        320,
+        320
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        440,
+        260
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        440,
+        180
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        560,
+        120
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      610,
+      60
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        220,
+        510
+      ],
+      "range": [
+        210,
+        250
+      ],
+      "speed": 55
+    },
+    {
+      "type": "patrol",
+      "position": [
+        220,
+        430
+      ],
+      "range": [
+        210,
+        250
+      ],
+      "speed": 60
+    },
+    {
+      "type": "patrol",
+      "position": [
+        340,
+        370
+      ],
+      "range": [
+        330,
+        370
+      ],
+      "speed": 65
+    }
+  ]
+};

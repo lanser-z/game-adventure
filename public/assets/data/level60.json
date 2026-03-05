@@ -1,0 +1,42 @@
+{
+  "levelId": 60,
+  "name": "顺序之谜",
+  "gravity": 980,
+  "player": {
+    "startPosition": [80, 550],
+    "jumpForce": -500,
+    "moveSpeed": 200,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [50, 580], "size": [120, 30] },
+    { "type": "static", "position": [220, 520], "size": [100, 25] },
+    { "type": "static", "position": [370, 460], "size": [80, 25] },
+    { "type": "static", "position": [500, 400], "size": [150, 25] },
+    { "type": "static", "position": [700, 400], "size": [80, 25] },
+    { "type": "static", "position": [500, 320], "size": [80, 25] },
+    { "type": "static", "position": [700, 280], "size": [100, 25] },
+    { "type": "static", "position": [350, 240], "size": [100, 25] },
+    { "type": "static", "position": [150, 200], "size": [120, 25] },
+    { "type": "static", "position": [50, 350], "size": [100, 25] },
+    { "type": "static", "position": [850, 280], "size": [150, 25] },
+    { "type": "static", "position": [1050, 280], "size": [100, 25] }
+  ],
+  "blocks": [
+    { "type": "pushable", "position": [520, 350], "size": [50, 50] },
+    { "type": "pushable", "position": [720, 350], "size": [50, 50] }
+  ],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [
+    { "type": "pressure", "position": [515, 375], "target": "btnA", "requiredWeight": 1 },
+    { "type": "pressure", "position": [715, 375], "target": "btnB", "requiredWeight": 1 },
+    { "type": "pressure", "position": [180, 175], "target": "btnC", "requiredWeight": 1 }
+  ],
+  "door": { "position": [1170, 220], "requires": ["btnA", "btnB", "btnC"] },
+  "enemies": [
+    { "type": "patrol", "position": [520, 370], "range": [510, 570], "speed": 60 },
+    { "type": "patrol", "position": [720, 370], "range": [710, 770], "speed": 60 }
+  ]
+}

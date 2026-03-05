@@ -1,0 +1,189 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 31,
+  "name": "精准降落",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      70,
+      150
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 185,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        50,
+        200
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        180,
+        300,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          180,
+          300
+        ],
+        [
+          180,
+          420
+        ]
+      ],
+      "speed": 90
+    },
+    {
+      "type": "moving",
+      "position": [
+        280,
+        300,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          280,
+          300
+        ],
+        [
+          280,
+          420
+        ]
+      ],
+      "speed": 100
+    },
+    {
+      "type": "moving",
+      "position": [
+        380,
+        300,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          380,
+          300
+        ],
+        [
+          380,
+          420
+        ]
+      ],
+      "speed": 110
+    },
+    {
+      "type": "static",
+      "position": [
+        480,
+        420
+      ],
+      "size": [
+        100,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        620,
+        360
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        740,
+        300
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        860,
+        240
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      910,
+      180
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        640,
+        330
+      ],
+      "range": [
+        630,
+        690
+      ],
+      "speed": 55
+    },
+    {
+      "type": "patrol",
+      "position": [
+        760,
+        270
+      ],
+      "range": [
+        750,
+        810
+      ],
+      "speed": 60
+    }
+  ]
+};

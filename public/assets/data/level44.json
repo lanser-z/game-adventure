@@ -1,0 +1,36 @@
+{
+  "levelId": 44,
+  "name": "箱人共舞",
+  "gravity": 980,
+  "player": {
+    "startPosition": [60, 200],
+    "jumpForce": -480,
+    "moveSpeed": 185,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [40, 420], "size": [200, 40] },
+    { "type": "static", "position": [280, 380], "size": [80, 30] },
+    { "type": "static", "position": [400, 380], "size": [80, 30] },
+    { "type": "static", "position": [520, 340], "size": [80, 30] },
+    { "type": "static", "position": [640, 340], "size": [80, 30] },
+    { "type": "static", "position": [760, 300], "size": [100, 30] },
+    { "type": "static", "position": [900, 260], "size": [120, 35] },
+    { "type": "static", "position": [1040, 200], "size": [100, 30] }
+  ],
+  "blocks": [
+    { "type": "pushable", "position": [100, 370], "size": [50, 50] },
+    { "type": "pushable", "position": [160, 370], "size": [50, 50] }
+  ],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [
+    { "type": "pressure", "position": [430, 350], "target": "btn1", "requiredWeight": 1 },
+    { "type": "pressure", "position": [670, 310], "target": "btn2", "requiredWeight": 1 }
+  ],
+  "door": { "position": [1090, 140], "requires": ["btn1", "btn2"] },
+  "enemies": [
+    { "type": "patrol", "position": [780, 270], "range": [770, 850], "speed": 60 }
+  ]
+}

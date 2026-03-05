@@ -1,0 +1,155 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 53,
+  "name": "暗夜危机",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -500,
+    "moveSpeed": 210,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        400
+      ],
+      "size": [
+        200,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        280,
+        400
+      ],
+      "size": [
+        150,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        470,
+        350
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        630,
+        350
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        810,
+        300
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        1000,
+        250
+      ],
+      "size": [
+        120,
+        35
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      1050,
+      190
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        100,
+        370
+      ],
+      "range": [
+        60,
+        200
+      ],
+      "speed": 90
+    },
+    {
+      "type": "patrol",
+      "position": [
+        340,
+        370
+      ],
+      "range": [
+        290,
+        410
+      ],
+      "speed": 95
+    },
+    {
+      "type": "patrol",
+      "position": [
+        670,
+        320
+      ],
+      "range": [
+        640,
+        730
+      ],
+      "speed": 100
+    },
+    {
+      "type": "patrol",
+      "position": [
+        850,
+        270
+      ],
+      "range": [
+        820,
+        940
+      ],
+      "speed": 105
+    }
+  ]
+};

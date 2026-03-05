@@ -1,0 +1,144 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 27,
+  "name": "敌人走廊",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 190,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        380
+      ],
+      "size": [
+        200,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        280,
+        380
+      ],
+      "size": [
+        200,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        520,
+        380
+      ],
+      "size": [
+        200,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        760,
+        380
+      ],
+      "size": [
+        200,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        900,
+        300
+      ],
+      "size": [
+        150,
+        35
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      970,
+      240
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        100,
+        350
+      ],
+      "range": [
+        60,
+        200
+      ],
+      "speed": 65
+    },
+    {
+      "type": "patrol",
+      "position": [
+        340,
+        350
+      ],
+      "range": [
+        290,
+        430
+      ],
+      "speed": 70
+    },
+    {
+      "type": "patrol",
+      "position": [
+        580,
+        350
+      ],
+      "range": [
+        530,
+        670
+      ],
+      "speed": 75
+    },
+    {
+      "type": "patrol",
+      "position": [
+        820,
+        350
+      ],
+      "range": [
+        770,
+        910
+      ],
+      "speed": 80
+    }
+  ]
+};

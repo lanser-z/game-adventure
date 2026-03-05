@@ -1,0 +1,35 @@
+{
+  "levelId": 59,
+  "name": "极速垂直",
+  "gravity": 1050,
+  "player": {
+    "startPosition": [90, 600],
+    "jumpForce": -560,
+    "moveSpeed": 220,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [60, 650], "size": [100, 30] },
+    { "type": "static", "position": [190, 580], "size": [70, 25] },
+    { "type": "static", "position": [190, 500], "size": [70, 25] },
+    { "type": "static", "position": [300, 430], "size": [70, 25] },
+    { "type": "static", "position": [300, 350], "size": [70, 25] },
+    { "type": "static", "position": [410, 280], "size": [70, 25] },
+    { "type": "static", "position": [410, 200], "size": [70, 25] },
+    { "type": "static", "position": [520, 130], "size": [70, 25] },
+    { "type": "static", "position": [520, 50], "size": [70, 25] },
+    { "type": "static", "position": [630, -20], "size": [100, 30] }
+  ],
+  "blocks": [],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [],
+  "door": { "position": [680, -80], "requires": [] },
+  "enemies": [
+    { "type": "patrol", "position": [210, 550], "range": [200, 250], "speed": 90 },
+    { "type": "patrol", "position": [210, 470], "range": [200, 250], "speed": 95 },
+    { "type": "patrol", "position": [320, 410], "range": [310, 360], "speed": 100 },
+    { "type": "patrol", "position": [320, 330], "range": [310, 360], "speed": 105 }
+  ]
+}

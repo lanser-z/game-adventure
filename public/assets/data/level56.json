@@ -1,0 +1,40 @@
+{
+  "levelId": 56,
+  "name": "六重考验",
+  "gravity": 980,
+  "player": {
+    "startPosition": [60, 200],
+    "jumpForce": -510,
+    "moveSpeed": 200,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [40, 420], "size": [200, 40] },
+    { "type": "static", "position": [280, 400], "size": [90, 30] },
+    { "type": "static", "position": [410, 400], "size": [90, 30] },
+    { "type": "static", "position": [540, 360], "size": [90, 30] },
+    { "type": "static", "position": [670, 360], "size": [90, 30] },
+    { "type": "static", "position": [800, 320], "size": [90, 30] },
+    { "type": "static", "position": [930, 320], "size": [90, 30] },
+    { "type": "static", "position": [1060, 280], "size": [120, 35] },
+    { "type": "static", "position": [1210, 220], "size": [100, 30] }
+  ],
+  "blocks": [
+    { "type": "pushable", "position": [80, 370], "size": [50, 50] },
+    { "type": "pushable", "position": [140, 370], "size": [50, 50] },
+    { "type": "pushable", "position": [200, 370], "size": [50, 50] }
+  ],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [
+    { "type": "pressure", "position": [290, 370], "target": "btn1", "requiredWeight": 1 },
+    { "type": "pressure", "position": [420, 370], "target": "btn2", "requiredWeight": 1 },
+    { "type": "pressure", "position": [550, 330], "target": "btn3", "requiredWeight": 1 },
+    { "type": "pressure", "position": [680, 330], "target": "btn4", "requiredWeight": 1 },
+    { "type": "pressure", "position": [810, 290], "target": "btn5", "requiredWeight": 1 },
+    { "type": "pressure", "position": [940, 290], "target": "btn6", "requiredWeight": 1 }
+  ],
+  "door": { "position": [1260, 160], "requires": ["btn1", "btn2", "btn3", "btn4", "btn5", "btn6"] },
+  "enemies": []
+}

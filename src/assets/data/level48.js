@@ -1,0 +1,221 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 48,
+  "name": "高速冲刺",
+  "gravity": 1050,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -530,
+    "moveSpeed": 220,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        420
+      ],
+      "size": [
+        70,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        150,
+        400,
+        0
+      ],
+      "size": [
+        55,
+        25
+      ],
+      "path": [
+        [
+          150,
+          400
+        ],
+        [
+          220,
+          400
+        ]
+      ],
+      "speed": 200
+    },
+    {
+      "type": "static",
+      "position": [
+        260,
+        380
+      ],
+      "size": [
+        55,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        350,
+        360,
+        0
+      ],
+      "size": [
+        55,
+        25
+      ],
+      "path": [
+        [
+          350,
+          360
+        ],
+        [
+          420,
+          360
+        ]
+      ],
+      "speed": 220
+    },
+    {
+      "type": "static",
+      "position": [
+        460,
+        340
+      ],
+      "size": [
+        55,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        550,
+        320,
+        0
+      ],
+      "size": [
+        55,
+        25
+      ],
+      "path": [
+        [
+          550,
+          320
+        ],
+        [
+          620,
+          320
+        ]
+      ],
+      "speed": 240
+    },
+    {
+      "type": "static",
+      "position": [
+        660,
+        300
+      ],
+      "size": [
+        55,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        750,
+        280,
+        0
+      ],
+      "size": [
+        55,
+        25
+      ],
+      "path": [
+        [
+          750,
+          280
+        ],
+        [
+          820,
+          280
+        ]
+      ],
+      "speed": 260
+    },
+    {
+      "type": "static",
+      "position": [
+        860,
+        260
+      ],
+      "size": [
+        55,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        950,
+        240,
+        0
+      ],
+      "size": [
+        55,
+        25
+      ],
+      "path": [
+        [
+          950,
+          240
+        ],
+        [
+          1020,
+          240
+        ]
+      ],
+      "speed": 280
+    },
+    {
+      "type": "static",
+      "position": [
+        1060,
+        220
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      1110,
+      160
+    ],
+    "requires": []
+  },
+  "enemies": []
+};

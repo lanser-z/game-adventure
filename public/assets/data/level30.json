@@ -1,0 +1,30 @@
+{
+  "levelId": 30,
+  "name": "极限跳跃",
+  "gravity": 1050,
+  "player": {
+    "startPosition": [70, 200],
+    "jumpForce": -510,
+    "moveSpeed": 195,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    { "type": "static", "position": [50, 400], "size": [70, 25] },
+    { "type": "static", "position": [160, 360], "size": [50, 25] },
+    { "type": "static", "position": [250, 320], "size": [45, 20] },
+    { "type": "static", "position": [330, 280], "size": [45, 20] },
+    { "type": "static", "position": [410, 320], "size": [45, 20] },
+    { "type": "static", "position": [490, 280], "size": [45, 20] },
+    { "type": "static", "position": [570, 240], "size": [50, 25] },
+    { "type": "static", "position": [660, 200], "size": [45, 20] },
+    { "type": "static", "position": [750, 160], "size": [50, 25] },
+    { "type": "static", "position": [840, 120], "size": [70, 25] }
+  ],
+  "blocks": [],
+  "triggers": [
+    { "type": "death", "position": [0, 700], "size": [2000, 100] }
+  ],
+  "buttons": [],
+  "door": { "position": [870, 60], "requires": [] },
+  "enemies": []
+}

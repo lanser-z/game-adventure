@@ -1,0 +1,173 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 25,
+  "name": "双闸门",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -470,
+    "moveSpeed": 180,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        400
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        200,
+        400
+      ],
+      "size": [
+        100,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        340,
+        400
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        460,
+        350
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        580,
+        350
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        700,
+        300
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        820,
+        250
+      ],
+      "size": [
+        80,
+        30
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        940,
+        200
+      ],
+      "size": [
+        120,
+        35
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pushable",
+      "position": [
+        130,
+        350
+      ],
+      "size": [
+        50,
+        50
+      ]
+    },
+    {
+      "type": "pushable",
+      "position": [
+        220,
+        350
+      ],
+      "size": [
+        50,
+        50
+      ]
+    }
+  ],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "type": "pressure",
+      "position": [
+        350,
+        370
+      ],
+      "target": "btn1",
+      "requiredWeight": 1
+    },
+    {
+      "type": "pressure",
+      "position": [
+        730,
+        270
+      ],
+      "target": "btn2",
+      "requiredWeight": 1
+    }
+  ],
+  "door": {
+    "position": [
+      990,
+      140
+    ],
+    "requires": [
+      "btn1",
+      "btn2"
+    ]
+  },
+  "enemies": []
+};

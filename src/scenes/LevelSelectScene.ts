@@ -18,16 +18,21 @@ export class LevelSelectScene extends Phaser.Scene {
     private levelItems: LevelItem[] = [];
     private backButton!: Phaser.GameObjects.Text;
     private levelButtons: Phaser.GameObjects.Container[] = [];
+    private levelContainer!: Phaser.GameObjects.Container;
+    private scrollY: number = 0;
+    private targetScrollY: number = 0;
+    private isDragging: boolean = false;
+    private lastPointerY: number = 0;
 
     constructor() {
         super({ key: 'LevelSelectScene' });
     }
 
     create(): void {
-        const { width, height } = this.cameras.main;
+        const { width } = this.cameras.main;
 
-        // 背景
-        this.add.rectangle(width / 2, height / 2, width, height, 0x1a1a2e);
+        // 背景（扩展可滚动区域）
+        this.add.rectangle(width / 2, 2000, width, 4000, 0x1a1a2e);
 
         // 标题
         const title = this.add.text(width / 2, 60, '选择关卡', {
@@ -49,14 +54,20 @@ export class LevelSelectScene extends Phaser.Scene {
         this.backButton.on('pointerover', () => this.backButton.setStyle({ color: '#4CAF50' }));
         this.backButton.on('pointerout', () => this.backButton.setStyle({ color: '#ffffff' }));
 
+        // 创建可滚动容器
+        this.levelContainer = this.add.container(0, 0);
+
         // 加载关卡数据
         this.loadLevelData();
 
-        // 创建关卡按钮
+        // 创建关卡按钮（在容器中）
         this.createLevelButtons();
 
-        // 显示总星级
+        // 显示总星级（固定在底部）
         this.showTotalStars();
+
+        // 设置滚动
+        this.setupScrolling();
     }
 
     /**
@@ -64,6 +75,8 @@ export class LevelSelectScene extends Phaser.Scene {
      */
     private loadLevelData(): void {
         const totalLevels = this.registry.get('totalLevels') || 20;
+        console.log('[LevelSelect] registry.get("totalLevels") =', this.registry.get('totalLevels'));
+        console.log('[LevelSelect] 使用 totalLevels =', totalLevels);
         const maxUnlocked = this.registry.get('maxUnlockedLevel') || 1;
         const levelStars = this.registry.get('levelStars') || {};
 
@@ -124,6 +137,7 @@ export class LevelSelectScene extends Phaser.Scene {
             const y = startY + row * spacingY;
 
             const button = this.createLevelButton(x, y, item);
+            this.levelContainer.add(button);  // 添加到容器而不是场景
             this.levelButtons.push(button);
         });
     }
@@ -286,5 +300,90 @@ export class LevelSelectScene extends Phaser.Scene {
      */
     private goBack(): void {
         this.scene.start('MainMenuScene');
+    }
+
+    /**
+     * 设置滚动功能
+     */
+    private setupScrolling(): void {
+        const maxY = 1800;  // 最大滚动范围
+        const minY = 0;
+        let dragStartTime: number = 0;
+        let dragStartY: number = 0;
+
+        // 鼠标/触摸拖拽滚动
+        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+            if (this.isDragging) {
+                const deltaY = this.lastPointerY - pointer.y;
+                this.targetScrollY = Phaser.Math.Clamp(
+                    this.targetScrollY + deltaY,
+                    minY, maxY
+                );
+                this.lastPointerY = pointer.y;
+            }
+        });
+
+        this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+            // 记录拖拽开始位置和时间，用于区分点击和拖拽
+            dragStartTime = Date.now();
+            dragStartY = pointer.y;
+            this.isDragging = true;
+            this.lastPointerY = pointer.y;
+        });
+
+        this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+            this.isDragging = false;
+            // 如果拖拽时间很短且移动距离很小，认为是点击而非拖拽
+            const dragDuration = Date.now() - dragStartTime;
+            const dragDistance = Math.abs(pointer.y - dragStartY);
+            if (dragDuration < 200 && dragDistance < 10) {
+                // 点击操作，不阻止默认行为
+            }
+        });
+
+        // 滚轮支持
+        this.input.on('wheel', (_pointer: any, _gameObjects: any, _deltaX: number, deltaY: number, _deltaZ: number) => {
+            this.targetScrollY = Phaser.Math.Clamp(
+                this.targetScrollY - deltaY * 0.5,
+                minY, maxY
+            );
+        });
+    }
+
+    /**
+     * 更新场景（每帧调用）
+     */
+    update(): void {
+        // 平滑滚动插值
+        this.scrollY += (this.targetScrollY - this.scrollY) * 0.1;
+
+        // 应用滚动到容器
+        this.levelContainer.setY(-this.scrollY);
+
+        // 显示滚动提示
+        this.updateScrollHint();
+    }
+
+    /**
+     * 更新滚动提示
+     */
+    private updateScrollHint(): void {
+        const { height } = this.cameras.main;
+        const hint = this.children.getByName('scrollHint') as Phaser.GameObjects.Text;
+
+        if (this.scrollY > 50 && this.targetScrollY < 1700) {
+            // 显示"向下/向上滚动"提示
+            if (!hint) {
+                const hintText = this.add.text(480, height - 40, '↓ 滚动查看更多关卡 ↓', {
+                    fontSize: '16px',
+                    fontFamily: 'Arial',
+                    color: '#AAAAAA'
+                });
+                hintText.setOrigin(0.5);
+                hintText.setName('scrollHint');
+            }
+        } else if (hint) {
+            hint.destroy();
+        }
     }
 }

@@ -1,0 +1,201 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 57,
+  "name": "移动堡垒",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -520,
+    "moveSpeed": 205,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        350
+      ],
+      "size": [
+        100,
+        35
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        180,
+        420,
+        0
+      ],
+      "size": [
+        80,
+        25
+      ],
+      "path": [
+        [
+          180,
+          420
+        ],
+        [
+          320,
+          420
+        ]
+      ],
+      "speed": 160
+    },
+    {
+      "type": "moving",
+      "position": [
+        360,
+        350,
+        0
+      ],
+      "size": [
+        70,
+        25
+      ],
+      "path": [
+        [
+          360,
+          350
+        ],
+        [
+          360,
+          260
+        ]
+      ],
+      "speed": 100
+    },
+    {
+      "type": "moving",
+      "position": [
+        480,
+        420,
+        0
+      ],
+      "size": [
+        80,
+        25
+      ],
+      "path": [
+        [
+          480,
+          420
+        ],
+        [
+          620,
+          420
+        ]
+      ],
+      "speed": 180
+    },
+    {
+      "type": "moving",
+      "position": [
+        660,
+        350,
+        0
+      ],
+      "size": [
+        70,
+        25
+      ],
+      "path": [
+        [
+          660,
+          350
+        ],
+        [
+          660,
+          240
+        ]
+      ],
+      "speed": 110
+    },
+    {
+      "type": "moving",
+      "position": [
+        780,
+        420,
+        0
+      ],
+      "size": [
+        80,
+        25
+      ],
+      "path": [
+        [
+          780,
+          420
+        ],
+        [
+          920,
+          420
+        ]
+      ],
+      "speed": 200
+    },
+    {
+      "type": "static",
+      "position": [
+        960,
+        350
+      ],
+      "size": [
+        120,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        1110,
+        280
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      1160,
+      220
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        990,
+        320
+      ],
+      "range": [
+        970,
+        1060
+      ],
+      "speed": 100
+    }
+  ]
+};

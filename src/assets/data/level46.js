@@ -1,0 +1,168 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 46,
+  "name": "敌潮汹涌",
+  "gravity": 980,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -490,
+    "moveSpeed": 200,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        400
+      ],
+      "size": [
+        300,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        380,
+        400
+      ],
+      "size": [
+        300,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        720,
+        400
+      ],
+      "size": [
+        300,
+        40
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        1060,
+        350
+      ],
+      "size": [
+        150,
+        35
+      ]
+    },
+    {
+      "type": "static",
+      "position": [
+        1230,
+        280
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      1280,
+      220
+    ],
+    "requires": []
+  },
+  "enemies": [
+    {
+      "type": "patrol",
+      "position": [
+        100,
+        370
+      ],
+      "range": [
+        60,
+        200
+      ],
+      "speed": 75
+    },
+    {
+      "type": "patrol",
+      "position": [
+        200,
+        370
+      ],
+      "range": [
+        150,
+        290
+      ],
+      "speed": 80
+    },
+    {
+      "type": "patrol",
+      "position": [
+        450,
+        370
+      ],
+      "range": [
+        400,
+        560
+      ],
+      "speed": 85
+    },
+    {
+      "type": "patrol",
+      "position": [
+        550,
+        370
+      ],
+      "range": [
+        500,
+        630
+      ],
+      "speed": 90
+    },
+    {
+      "type": "patrol",
+      "position": [
+        800,
+        370
+      ],
+      "range": [
+        740,
+        900
+      ],
+      "speed": 95
+    },
+    {
+      "type": "patrol",
+      "position": [
+        900,
+        370
+      ],
+      "range": [
+        850,
+        1000
+      ],
+      "speed": 100
+    }
+  ]
+};

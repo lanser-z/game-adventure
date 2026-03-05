@@ -1,0 +1,187 @@
+// 自动生成的关卡数据
+export default {
+  "levelId": 40,
+  "name": "速度与激情",
+  "gravity": 1050,
+  "player": {
+    "startPosition": [
+      60,
+      200
+    ],
+    "jumpForce": -520,
+    "moveSpeed": 210,
+    "doubleJumpEnabled": true
+  },
+  "platforms": [
+    {
+      "type": "static",
+      "position": [
+        40,
+        420
+      ],
+      "size": [
+        80,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        160,
+        400,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          160,
+          400
+        ],
+        [
+          240,
+          400
+        ]
+      ],
+      "speed": 180
+    },
+    {
+      "type": "static",
+      "position": [
+        280,
+        380
+      ],
+      "size": [
+        60,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        380,
+        360,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          380,
+          360
+        ],
+        [
+          460,
+          360
+        ]
+      ],
+      "speed": 200
+    },
+    {
+      "type": "static",
+      "position": [
+        500,
+        340
+      ],
+      "size": [
+        60,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        600,
+        320,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          600,
+          320
+        ],
+        [
+          680,
+          320
+        ]
+      ],
+      "speed": 220
+    },
+    {
+      "type": "static",
+      "position": [
+        720,
+        300
+      ],
+      "size": [
+        60,
+        25
+      ]
+    },
+    {
+      "type": "moving",
+      "position": [
+        820,
+        280,
+        0
+      ],
+      "size": [
+        60,
+        25
+      ],
+      "path": [
+        [
+          820,
+          280
+        ],
+        [
+          900,
+          280
+        ]
+      ],
+      "speed": 240
+    },
+    {
+      "type": "static",
+      "position": [
+        940,
+        260
+      ],
+      "size": [
+        100,
+        30
+      ]
+    }
+  ],
+  "blocks": [],
+  "triggers": [
+    {
+      "type": "death",
+      "position": [
+        0,
+        700
+      ],
+      "size": [
+        2000,
+        100
+      ]
+    }
+  ],
+  "buttons": [],
+  "door": {
+    "position": [
+      990,
+      200
+    ],
+    "requires": []
+  },
+  "enemies": []
+};
