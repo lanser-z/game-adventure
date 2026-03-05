@@ -51,6 +51,8 @@ export class Player extends Phaser.GameObjects.Sprite {
         // 设置物理属性
         const body = this.body as Phaser.Physics.Arcade.Body;
         body.setSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        // setOffset(0, 0) 使物理身体中心与游戏对象中心对齐（Sprite 默认 origin 是 0.5, 0.5）
+        body.setOffset(0, 0);
         body.setCollideWorldBounds(true);
         body.setBounce(0, 0);
         body.setDragX(500);
@@ -239,7 +241,10 @@ export class Player extends Phaser.GameObjects.Sprite {
     private checkGrounded(): void {
         const body = this.body as Phaser.Physics.Arcade.Body;
 
-        this.isGrounded = body.touching.down || body.blocked.down;
+        // 检测是否有向下的碰撞
+        const hasTouchingDown = body.touching.down || body.blocked.down;
+
+        this.isGrounded = hasTouchingDown;
 
         if (this.isGrounded) {
             this.jumpCount = 0;

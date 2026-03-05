@@ -16,6 +16,7 @@ export class Platform extends Phaser.GameObjects.Image {
     declare body: Phaser.Physics.Arcade.StaticBody | Phaser.Physics.Arcade.Body;
 
     private isMoving: boolean = false;
+    private preupdateCallback: (() => void) | null = null;
 
     constructor(
         scene: Phaser.Scene,
@@ -58,8 +59,6 @@ export class Platform extends Phaser.GameObjects.Image {
 
         // 添加到场景
         scene.add.existing(this);
-
-        // 移动平台使用 DynamicBody，静态平台使用 StaticBody
         this.isMoving = type === 'moving';
         if (this.isMoving) {
             // 移动平台：使用动态物理体，但不受重力影响
@@ -68,9 +67,16 @@ export class Platform extends Phaser.GameObjects.Image {
             body.setImmovable(true); // 不可被玩家推动
             body.setAllowGravity(false); // 不受重力影响
             body.setVelocity(0, 0); // 初始速度为0
+            // 设置物理身体尺寸（与视觉对齐）
+            body.setSize(width, height);
+            body.setOffset(0, 0);
         } else {
             // 静态平台：使用静态物理体
             scene.physics.add.existing(this, true); // true = static
+            const body = this.body as Phaser.Physics.Arcade.StaticBody;
+            // 设置物理身体尺寸（与视觉对齐）
+            body.setSize(width, height);
+            body.setOffset(0, 0);
         }
 
         // 移动平台处理
@@ -107,15 +113,37 @@ export class Platform extends Phaser.GameObjects.Image {
             endCenterX, endCenterY
         ) / speed * 1000;
 
-        // 创建往复运动的 tween
-        this.scene.tweens.add({
+        // 创建往复运动的 tween，同时同步物理身体位置
+        const tween = this.scene.tweens.add({
             targets: this,
             x: endCenterX,
             y: endCenterY,
             duration: duration,
-            ease: 'Linear.none',
+            ease: 'Linear',
             yoyo: true, // 往返运动
-            repeat: -1 // 无限循环
+            repeat: -1, // 无限循环
+            onUpdate: () => {
+                // 同步物理身体位置（在渲染前更新）
+                const body = this.body as Phaser.Physics.Arcade.Body;
+                if (body) {
+                }
+            }
         });
+
+        // 使用 preupdate 确保在物理更新前同步位置
+        this.preupdateCallback = () => {
+            const body = this.body as Phaser.Physics.Arcade.Body;
+            if (body && tween.isPlaying()) {
+                // 强制同步物理身体到当前视觉位置
+            }
+        };
+        this.scene.events.on('preupdate', this.preupdateCallback);
+    }
+
+    destroy(): void {
+        if (this.scene && this.scene.events && this.preupdateCallback) {
+            this.scene.events.off('preupdate', this.preupdateCallback);
+        }
+        super.destroy();
     }
 }

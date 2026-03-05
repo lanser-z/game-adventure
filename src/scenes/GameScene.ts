@@ -70,6 +70,10 @@ export class GameScene extends Phaser.Scene {
     private triggers: TriggerZone[] = [];
     private audioManager!: AudioManager;
 
+    // 调试模式
+    private debugGraphics!: Phaser.GameObjects.Graphics;
+    private showDebugBounds: boolean = true; // 默认开启调试模式
+
     // UI
     private pauseButton!: Phaser.GameObjects.Text;
     private levelText!: Phaser.GameObjects.Text;
@@ -82,6 +86,7 @@ export class GameScene extends Phaser.Scene {
     private deathCount: number = 0;
     private isPaused: boolean = false;
     private isGameOver: boolean = false;
+
 
     constructor() {
         super({ key: 'GameScene' });
@@ -161,6 +166,7 @@ export class GameScene extends Phaser.Scene {
         // 更新UI
         this.updateUI();
     }
+
 
     /**
      * 加载关卡数据
@@ -298,6 +304,72 @@ export class GameScene extends Phaser.Scene {
         // 设置按钮的玩家和箱子引用
         this.buttons.forEach(button => {
             button.setReferences(this.player, this.blocks);
+        });
+
+        // 创建调试图形
+        this.createDebugGraphics();
+    }
+
+    /**
+     * 创建调试边界框
+     */
+    private createDebugGraphics(): void {
+        if (!this.showDebugBounds) return;
+
+        this.debugGraphics = this.add.graphics();
+        this.debugGraphics.setDepth(1000);
+
+        // 在 update 中绘制边界框
+        this.events.on('update', this.updateDebugGraphics, this);
+    }
+
+    /**
+     * 更新调试边界框
+     */
+    private updateDebugGraphics(): void {
+        if (!this.showDebugBounds || !this.debugGraphics) return;
+
+        this.debugGraphics.clear();
+
+        // 绘制玩家边界框（红色）
+        const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
+        if (playerBody) {
+            this.debugGraphics.lineStyle(2, 0xff0000);
+            // body.x/y 是中心点，需要减去一半得到左上角
+            this.debugGraphics.strokeRect(
+                playerBody.x - playerBody.width / 2,
+                playerBody.y - playerBody.height / 2,
+                playerBody.width,
+                playerBody.height
+            );
+        }
+
+        // 绘制平台边界框（绿色）
+        this.platforms.forEach(platform => {
+            const body = platform.body as Phaser.Physics.Arcade.Body;
+            if (body) {
+                this.debugGraphics.lineStyle(2, 0x00ff00);
+                this.debugGraphics.strokeRect(
+                    body.x - body.width / 2,
+                    body.y - body.height / 2,
+                    body.width,
+                    body.height
+                );
+            }
+        });
+
+        // 绘制箱子边界框（蓝色）
+        this.blocks.forEach(block => {
+            const body = block.body as Phaser.Physics.Arcade.Body;
+            if (body) {
+                this.debugGraphics.lineStyle(2, 0x0000ff);
+                this.debugGraphics.strokeRect(
+                    body.x - body.width / 2,
+                    body.y - body.height / 2,
+                    body.width,
+                    body.height
+                );
+            }
         });
     }
 
@@ -577,8 +649,9 @@ export class GameScene extends Phaser.Scene {
         text.setOrigin(0.5);
 
         // 解锁下一关
+        const totalLevels = this.registry.get('totalLevels') || 60;
         const maxUnlocked = this.registry.get('maxUnlockedLevel') || 1;
-        if (typeof this.levelId === 'number' && this.levelId >= maxUnlocked && this.levelId < 20) {
+        if (typeof this.levelId === 'number' && this.levelId >= maxUnlocked && this.levelId < totalLevels) {
             this.registry.set('maxUnlockedLevel', this.levelId + 1);
             console.log('[GameScene] 解锁下一关:', this.levelId + 1);
         }
@@ -588,7 +661,7 @@ export class GameScene extends Phaser.Scene {
             // 停止背景音乐，防止下一关重复播放
             this.audioManager.stopBackgroundMusic();
 
-            if (typeof this.levelId === 'number' && this.levelId < 20) {
+            if (typeof this.levelId === 'number' && this.levelId < totalLevels) {
                 console.log('[GameScene] 进入下一关:', this.levelId + 1);
                 this.scene.start('GameScene', { levelId: this.levelId + 1 });
             } else {
