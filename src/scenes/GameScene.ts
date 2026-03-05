@@ -72,7 +72,7 @@ export class GameScene extends Phaser.Scene {
 
     // 调试模式
     private debugGraphics!: Phaser.GameObjects.Graphics;
-    private showDebugBounds: boolean = true; // 默认开启调试模式
+    private showDebugBounds: boolean = false; // 默认关闭调试模式
 
     // UI
     private pauseButton!: Phaser.GameObjects.Text;
@@ -472,9 +472,16 @@ export class GameScene extends Phaser.Scene {
         player: Player,
         enemy: Enemy
     ): void {
-        // 检查是否踩到敌人头顶
         const playerBody = player.body as Phaser.Physics.Arcade.Body;
-        if (playerBody && playerBody.velocity.y > 0 && player.y < enemy.y - 20) {
+        const enemyBody = enemy.body as Phaser.Physics.Arcade.Body;
+
+        if (!playerBody || !enemyBody) return;
+
+        // 检查是否踩到敌人头顶（玩家底部高于敌人顶部，且正在下落）
+        const playerBottom = playerBody.bottom;
+        const enemyTop = enemyBody.top;
+
+        if (playerBody.velocity.y > 0 && playerBottom <= enemyTop + 10) {
             // 踩死敌人
             enemy.die();
             this.audioManager.playSound('bounce');

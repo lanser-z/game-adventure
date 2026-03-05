@@ -33,6 +33,7 @@ export class Enemy extends Phaser.GameObjects.Container {
         body.setSize(40, 40);
         body.setCollideWorldBounds(true);
         body.setBounce(0, 0);
+        body.setAllowGravity(false);
 
         this.createEnemyGraphics();
 
@@ -133,9 +134,13 @@ export class Enemy extends Phaser.GameObjects.Container {
      */
     private startPatrol(): void {
         const body = this.body as Phaser.Physics.Arcade.Body;
+        const startY = this.y;
+        let floatTime = 0;
 
-        this.scene.events.on('update', () => {
+        this.scene.events.on('update', (_time: number, delta: number) => {
             if (this.isDead) return;
+
+            floatTime += delta / 1000;
 
             // 移动
             body.setVelocityX(this.direction * this.moveSpeed);
@@ -148,6 +153,11 @@ export class Enemy extends Phaser.GameObjects.Container {
                 this.direction = 1;
                 this.setScale(1, 1);
             }
+
+            // 垂直浮动 - 使用正弦波，平均值为零
+            const floatOffset = Math.sin(floatTime * 2) * 15;
+            body.y = startY + 20 + floatOffset;
+            this.y = body.y;
         });
     }
 
