@@ -210,6 +210,75 @@ if (fs.existsSync(dataDir)) {
     });
 }
 
+// 删除 CDN 资源目录（这些资源从 lanser.fun 动态加载）
+console.log('[Build] 清理 CDN 资源（将从远程加载）...');
+
+// 删除所有 JSON 文件（关卡数据从 CDN 加载）
+const jsonDirs = [
+    path.join(wechatDir, 'assets/data'),
+    path.join(wechatDir, 'assets')
+];
+jsonDirs.forEach(dir => {
+    if (fs.existsSync(dir)) {
+        const jsonFiles = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+        jsonFiles.forEach(file => {
+            const filePath = path.join(dir, file);
+            fs.unlinkSync(filePath);
+            console.log(`[Build] 删除 CDN 资源：${filePath.replace(wechatDir + '/', '')}`);
+        });
+    }
+});
+
+// 删除音频目录（从 CDN 加载）
+const audioDir = path.join(wechatDir, 'assets/audio');
+if (fs.existsSync(audioDir)) {
+    fs.rmSync(audioDir, { recursive: true, force: true });
+    console.log('[Build] 删除 CDN 资源：assets/audio/');
+}
+
+// 删除玩家图片目录（从 CDN 加载）
+const playerDir = path.join(wechatDir, 'assets/player');
+if (fs.existsSync(playerDir)) {
+    fs.rmSync(playerDir, { recursive: true, force: true });
+    console.log('[Build] 删除 CDN 资源：assets/player/');
+}
+
+// 删除 textures 目录（从 CDN 加载）
+const texturesDir = path.join(wechatDir, 'assets/textures');
+if (fs.existsSync(texturesDir)) {
+    fs.rmSync(texturesDir, { recursive: true, force: true });
+    console.log('[Build] 删除 CDN 资源：assets/textures/');
+}
+
+// 删除 environment 目录（从 CDN 加载）
+const environmentDir = path.join(wechatDir, 'assets/environment');
+if (fs.existsSync(environmentDir)) {
+    fs.rmSync(environmentDir, { recursive: true, force: true });
+    console.log('[Build] 删除 CDN 资源：assets/environment/');
+}
+
+// 删除 ui 目录（从 CDN 加载）
+const uiDir = path.join(wechatDir, 'assets/ui');
+if (fs.existsSync(uiDir)) {
+    fs.rmSync(uiDir, { recursive: true, force: true });
+    console.log('[Build] 删除 CDN 资源：assets/ui/');
+}
+
+// 删除根目录下的图片和 SVG 文件
+const imageExtensions = ['.png', '.svg', '.jpg', '.jpeg', '.mp3', '.wav', '.ogg'];
+const assetsDir = path.join(wechatDir, 'assets');
+if (fs.existsSync(assetsDir)) {
+    const files = fs.readdirSync(assetsDir);
+    files.forEach(file => {
+        const ext = path.extname(file).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+            const filePath = path.join(assetsDir, file);
+            fs.unlinkSync(filePath);
+            console.log(`[Build] 删除 CDN 资源：assets/${file}`);
+        }
+    });
+}
+
 // 复制 document polyfill 文件
 const polyfillSource = path.join(__dirname, '../src/platforms/adapter/document-polyfill.js');
 const polyfillDest = path.join(wechatDir, 'assets/document-polyfill.js');

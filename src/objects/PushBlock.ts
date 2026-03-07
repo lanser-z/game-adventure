@@ -50,17 +50,6 @@ export class PushBlock extends Phaser.GameObjects.Image {
         graphics.lineStyle(2, 0x333333, 1);
         graphics.strokeRect(0, 0, width, height);
 
-        // 绘制木箱交叉线
-        graphics.lineStyle(1, 0x8B7355, 0.8);
-        graphics.lineBetween(5, 5, width - 5, height - 5);
-        graphics.lineBetween(width - 5, 5, 5, height - 5);
-
-        // 添加木纹线
-        graphics.lineBetween(10, 0, 10, height);
-        graphics.lineBetween(width - 10, 0, width - 10, height);
-        graphics.lineBetween(0, 15, width, 15);
-        graphics.lineBetween(0, height - 15, width, height - 15);
-
         // 生成纹理
         graphics.generateTexture(key, width, height);
         graphics.destroy();

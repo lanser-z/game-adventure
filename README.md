@@ -7,7 +7,7 @@
 ### 安装依赖
 
 ```bash
-cd /home/data/aiprj/game2
+cd /home/data/aiprj/game-wx
 npm install
 ```
 
