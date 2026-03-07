@@ -24,7 +24,11 @@ export default defineConfig({
     wechatAdapterInject(),
     viteStaticCopy({
       targets: [
-        { src: 'public/assets/**/*', dest: 'assets' },
+        // 按目录分别复制，保持结构清晰
+        { src: 'public/assets/audio/*', dest: 'assets/audio' },
+        { src: 'public/assets/data/*', dest: 'assets/data' },
+        { src: 'public/assets/player/*', dest: 'assets/player' },
+        { src: 'public/assets/textures/environment/*', dest: 'assets/textures/environment' },
         { src: 'sitemap.json', dest: '.' },
         { src: 'project.wechat.json', dest: '.', rename: 'game.json' },
         { src: 'src/platforms/adapter/weapp-adapter.js', dest: 'assets', rename: 'weapp-adapter.js' },
@@ -36,6 +40,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    copyPublicDir: false, // 禁用自动复制 public 目录，由 vite-plugin-static-copy 统一处理
     sourcemap: false,
     rollupOptions: {
       input: {
