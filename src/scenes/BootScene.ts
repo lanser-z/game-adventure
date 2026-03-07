@@ -84,16 +84,16 @@ export class BootScene extends Phaser.Scene {
             this.load.audio(`sfx_${effect}`, AssetList.getAudioPath(`sfx_${effect}.mp3`));
         });
 
-        console.log(`[BootScene] 音频资源路径: ${AssetsConfig.useRemote ? AssetsConfig.remoteBase : AssetsConfig.localBase}`);
+        console.log(`[BootScene] 音频资源路径：${AssetsConfig.useRemote ? AssetsConfig.remoteBase : AssetsConfig.localBase}`);
 
         // 音频加载错误处理（可选文件）
         this.load.on('loaderror', (fileObj: any) => {
             if (fileObj.type === 'audio') {
                 console.log(`[BootScene] 音频文件加载失败（可选）: ${fileObj.key}`);
             } else if (fileObj.type === 'json') {
-                console.warn(`[BootScene] JSON 文件加载失败: ${fileObj.key} from ${fileObj.url}`);
+                console.warn(`[BootScene] JSON 文件加载失败：${fileObj.key} from ${fileObj.url}`);
             } else {
-                console.warn(`[BootScene] 资源加载失败: ${fileObj.key} (${fileObj.type})`);
+                console.warn(`[BootScene] 资源加载失败：${fileObj.key} (${fileObj.type})`);
             }
         });
     }
@@ -117,6 +117,8 @@ export class BootScene extends Phaser.Scene {
         // 加载玩家图片（微信小游戏特殊处理）
         this.loadPlayerImages().then(() => {
             console.log('[BootScene] 玩家图片加载完成');
+            // 加载环境贴图（block.svg 用于箱子）
+            this.loadEnvironmentTextures();
             this.continueCreate();
         });
     }
@@ -143,11 +145,11 @@ export class BootScene extends Phaser.Scene {
 
                     // 添加到 Phaser 纹理管理器
                     this.textures.addCanvas(`player_${name}`, canvas);
-                    console.log(`[BootScene] 加载玩家图片: ${name} (来源: ${AssetsConfig.useRemote ? '远程' : '本地'})`);
+                    console.log(`[BootScene] 加载玩家图片：${name} (来源：${AssetsConfig.useRemote ? '远程' : '本地'})`);
                     resolve();
                 };
                 img.onerror = () => {
-                    console.error(`[BootScene] 加载玩家图片失败: ${name}`);
+                    console.error(`[BootScene] 加载玩家图片失败：${name}`);
                     reject(new Error(`Failed to load ${name}`));
                 };
                 // 使用配置的 URL
@@ -156,6 +158,34 @@ export class BootScene extends Phaser.Scene {
         });
 
         await Promise.all(promises);
+    }
+
+    /**
+     * 加载环境贴图（block.svg 用于箱子等）
+     */
+    private async loadEnvironmentTextures(): Promise<void> {
+        const blockSvg = 'block.svg';
+        return new Promise<void>((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img, 0, 0);
+
+                this.textures.addCanvas('block', canvas);
+                console.log(`[BootScene] 加载环境贴图：block.svg (来源：${AssetsConfig.useRemote ? '远程' : '本地'})`);
+                resolve();
+            };
+            img.onerror = () => {
+                console.error('[BootScene] 加载环境贴图失败：block.svg');
+                reject(new Error('Failed to load block.svg'));
+            };
+            img.src = AssetsConfig.getUrl(`textures/environment/${blockSvg}`);
+        });
     }
 
     /**
@@ -170,9 +200,9 @@ export class BootScene extends Phaser.Scene {
         const sampleKeys = ['level1', 'level2', 'level10'];
         sampleKeys.forEach(key => {
             if (this.cache.json.exists(key)) {
-                console.log(`[BootScene] 验证缓存: ${key} 已就绪`);
+                console.log(`[BootScene] 验证缓存：${key} 已就绪`);
             } else {
-                console.warn(`[BootScene] 警告: ${key} 未找到`);
+                console.warn(`[BootScene] 警告：${key} 未找到`);
             }
         });
 
@@ -191,7 +221,7 @@ export class BootScene extends Phaser.Scene {
         // 游戏总关卡数
         console.log(`[BootScene] 设置 totalLevels = ${TOTAL_LEVELS}`);
         this.registry.set('totalLevels', TOTAL_LEVELS);
-        console.log(`[BootScene] 验证: registry.get('totalLevels') = ${this.registry.get('totalLevels')}`);
+        console.log(`[BootScene] 验证：registry.get('totalLevels') = ${this.registry.get('totalLevels')}`);
 
         // 初始化微信适配器
         wechatAdapter.init();
@@ -215,7 +245,7 @@ export class BootScene extends Phaser.Scene {
         // 设置分享信息
         wechatAdapter.onShareAppMessage(() => {
             return {
-                title: '来玩小青蛙的奇妙冒险！60个益智关卡等你挑战',
+                title: '来玩小青蛙的奇妙冒险！60 个益智关卡等你挑战',
                 imageUrl: ''
             };
         });
